@@ -16,3 +16,7 @@ print(text)
 # Interface für Anwendung bauen mit tkinter
 # Github Projekt anlegen
 # Vortrag vorbereiten
+
+
+
+'philipp'
