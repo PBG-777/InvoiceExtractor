@@ -1,17 +1,17 @@
-Firmenname
-Datum
-IBAN
-Telefonnummer
+Firmenname +
+Datum +
+IBAN +
+Telefonnummer 
 Rechnungsnummer
 Ansprechpartner
 ------
-Rechnungsdatum/Lieferdatum
-Rechnungsbetrag
-Positionen
-Menge/Stückzahl
+Rechnungsdatum/Lieferdatum   
+Rechnungsbetrag -
+Positionen -
+Menge/Stückzahl -
 -----
-Zahlungsfrist
-Lieferdatum
+Zahlungsfrist +
+Lieferdatum +
 
 
 
