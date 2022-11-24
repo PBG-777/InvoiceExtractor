@@ -19,7 +19,7 @@ def file_list():
 
 
 def pdf_text_extraction():
-    """Extrahiert den Text einer PDF Datei mit dem Dateinamen aus Funktion folder_iteration()"""
+    """Extrahiert den Text aller PDF Dateien mit dem Dateinamen aus der Liste "files" mit einer for Schleife"""
     for item in files:
         working_directory = os.getcwd()
         file_path = working_directory + "\\" + folder + "\\" + item
