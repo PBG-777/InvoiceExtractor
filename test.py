@@ -2,8 +2,11 @@ import PyPDF2
 import os
 import re
 
+
 files = list()
-folder = "rechnungen"
+folder = "rechnungen" #vorerst fester Ordner
+# folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
+
 def file_list():
     """Ordner in einer Schleife durchlaufen, alle Dateinamen extrahieren und in Liste speichern"""
     #https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
