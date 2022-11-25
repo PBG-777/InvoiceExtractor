@@ -3,8 +3,8 @@ import os
 import re
 
 
-files = list()
-folder = "rechnungen" #vorerst fester Ordner
+files = list()          #hier kommen die Dateinamen rein
+folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
 
 def file_list():
@@ -19,7 +19,7 @@ def file_list():
 
 
 def pdf_text_extraction():
-    """Extrahiert den Text aller PDF Dateien mit dem Dateinamen aus der Liste "files" mit einer for Schleife"""
+    """Extrahiert den Text aller PDF Dateien mit dem Dateinamen aus der Liste "files" mittels for Schleife"""
     for item in files:
         working_directory = os.getcwd()
         file_path = working_directory + "\\" + folder + "\\" + item
@@ -30,19 +30,20 @@ def pdf_text_extraction():
         pageobj=pdfreader.getPage(x-1)
         text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
 
-        #Regex hier einsetzen / später als eigene Funktion definieren
+        # Bitte hier unten die Regex einsetzen (wird später als eigene Funktion definiert)
+        # mit Print testen
 
         #Regex: Firmenname
         firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
         if firmenname:
-            firmenname = firmenname[0]             #Firmenname final(von Email Adresse extrahiert)
+            firmenname = firmenname[0]             #Firmenname final  (von Email Adresse extrahiert)
 
         #Regex: Datum
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
-        datum = min(datum)                          #Rechnungsdatum final/kleinstes Datum aus Rechnung
+        datum = min(datum)                          #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
 
 
-
+#führt aus
 file_list()
 pdf_text_extraction()
 
