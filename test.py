@@ -10,7 +10,7 @@ folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 def file_list():
     """Ordner in einer Schleife durchlaufen, alle Dateinamen extrahieren und in Liste speichern"""
     #https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
-    directory = "rechnungen"
+    directory = "rechnungen"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
     for file in os.listdir(directory):
          filename = os.fsdecode(file)
          if filename.endswith(".pdf"):
@@ -36,11 +36,13 @@ def pdf_text_extraction():
         #Regex: Firmenname
         firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
         if firmenname:
-            firmenname = firmenname[0]             #Firmenname final  (von Email Adresse extrahiert)
+            firmenname = firmenname[0]      #Firmenname final  (von Email Adresse extrahiert, Achtung aktuell enthält nur eine Rechnung eine Mailadresse, deswegen sind einige Listen leer)
+            print(firmenname.title())
 
         #Regex: Datum
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
-        datum = min(datum)                          #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
+        datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
+        print(datum)
 
 
 #führt aus
