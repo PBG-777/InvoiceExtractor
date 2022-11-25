@@ -28,9 +28,21 @@ def pdf_text_extraction():
         pdfreader= PyPDF2.PdfFileReader(fhandler)
         x=pdfreader.numPages
         pageobj=pdfreader.getPage(x-1)
-        text=pageobj.extractText() #hier können die regex angesetzt werd
-        print(text)
+        text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
+
+        #Regex hier einsetzen / später als eigene Funktion definieren
+
+        #Regex: Firmenname
+        firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
+        if firmenname:
+            firmenname = firmenname[0]             #Firmenname final(von Email Adresse extrahiert)
+
+        #Regex: Datum
+        datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
+        datum = min(datum)                          #Rechnungsdatum final/kleinstes Datum aus Rechnung
+
 
 
 file_list()
 pdf_text_extraction()
+
