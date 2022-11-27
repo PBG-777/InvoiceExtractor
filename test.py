@@ -29,7 +29,6 @@ def pdf_text_extraction():
         x=pdfreader.numPages
         pageobj=pdfreader.getPage(x-1)
         text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
-
         # Bitte hier unten die Regex einsetzen (wird später als eigene Funktion definiert)
         # mit Print testen
 
@@ -43,6 +42,17 @@ def pdf_text_extraction():
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
         datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
         print(datum)
+
+        # Regex: IBAN
+        # in Rechnung 2 gibt es diese iban 'De7273173' am besten ignorieren wir so eine IBAN
+        iBan1 = re.findall('[A-Z]{2}[0-9]{2,18}', text)
+        iBan2 = re.findall('[A-Z]{2}(?:[ ]?[0-9]){18,20}', text)
+        if iBan2:
+            print(iBan2[0])
+        elif iBan1:
+            print(iBan1[0])
+
+        # Regex: Telefonnummer
 
 
 #führt aus
