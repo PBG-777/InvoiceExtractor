@@ -65,7 +65,14 @@ def pdf_text_extraction():
         gesamtbetrag = max(gesamtbetrag)
         current_dataset["gesamtbetrag"] = gesamtbetrag
         print(gesamtbetrag)
-        
+
+        # Regex Telefonnummer
+        text_new = re.split("\n", text)
+        for lst in text_new:
+            if 'Telefon:' in lst or 'Tel:' in lst:
+                telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
+                current_dataset["Telefonnummer"] = telefonnummer[0]
+
         all_datasets.append(current_dataset)
     return all_datasets
 
