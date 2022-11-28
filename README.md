@@ -1,6 +1,8 @@
 ## About
 Mini-Projekt der Gruppe-B1-1 für das Fach 
+
 Programmierung für KI - WiSe22/23
+
 Fachhochschule Südwestfalen
 
 Thema: Extrahieren von Informationen aus PDF Dokumenten
@@ -16,17 +18,19 @@ Thema: Extrahieren von Informationen aus PDF Dokumenten
 * [ ] Vortrag vorbereiten
 
 ## Datenextaktion
-Firmenname +
-Datum +
-IBAN +
-Telefonnummer 
-Rechnungsnummer
-Ansprechpartner
+Firmenname +  
+Datum +  
+IBAN +   
+Telefonnummer   
+Rechnungsnummer  
+Ansprechpartner  
 
-Rechnungsdatum/Lieferdatum   
-Rechnungsbetrag -
-Positionen -
-Menge/Stückzahl -
 
-Zahlungsfrist +
+Rechnungsdatum/Lieferdatum  
+Rechnungsbetrag -  
+Positionen -  
+Menge/Stückzahl -  
+
+
+Zahlungsfrist +  
 Lieferdatum +
