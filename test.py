@@ -1,6 +1,7 @@
 import PyPDF2
 import os
 import re
+import datetime
 
 
 files = list()          #hier kommen die Dateinamen rein
@@ -54,10 +55,10 @@ def pdf_text_extraction():
         # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
         iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
         if iban:
-            iban = re.sub(r"\s+","",iban[0])   
+            iban = re.sub(r"\s+","",iban[0])
             current_dataset["iban"] = iban
             print(iban)
-        
+
         # Regex: Gesamtbetrag
         # Annahme: Komma als Dezimaltrennzeichen
         gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
@@ -66,12 +67,22 @@ def pdf_text_extraction():
         current_dataset["gesamtbetrag"] = gesamtbetrag
         print(gesamtbetrag)
 
-        # Regex Telefonnummer
+        # Regex Telefonnummer and Zahlungsfrist
         text_new = re.split("\n", text)
+        # print(text_new)
         for lst in text_new:
             if 'Telefon:' in lst or 'Tel:' in lst:
                 telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
                 current_dataset["Telefonnummer"] = telefonnummer[0]
+            if 'Der Gesamtbetrag ist bis zum'in lst or 'Fälligkeitsdatum:' in lst:
+                zahlungsfrist = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",lst)
+                current_dataset["Zahlungsfrist"] = zahlungsfrist[0]
+            if 'Zahlbar innerhalb' in lst or 'Zahlungsbedingungen' in lst:
+                tags = re.findall("[0-9]{2}",lst)
+                datum_1 = datetime.datetime.strptime(datum, "%d.%m.%Y")
+                zahlungsfrist = datum_1 + datetime.timedelta(int(tags[0]))
+                current_dataset["Zahlungsfrist"] = str(zahlungsfrist).split()[0]
+
 
         all_datasets.append(current_dataset)
     return all_datasets
