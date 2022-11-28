@@ -6,14 +6,14 @@ Fachhochschule Südwestfalen
 Thema: Extrahieren von Informationen aus PDF Dokumenten
 
 ## Projektstand
-*[ ] Daten aus Pdf extrahieren
-*[ ] Ordner vielen mit PDFs durchlaufen/Schleife
-*[ ] Reguläre Ausdrücke bauen
-*[ ] Datenbank erstellen
-*[ ] Daten ablegen
-*[ ] Interface für Anwendung bauen mit tkinter
-*[X] Github Projekt anlegen
-*[ ] Vortrag vorbereiten
+* [X] Github Projekt anlegen
+* [ ] Daten aus Pdf extrahieren
+* [ ] Ordner vielen mit PDFs durchlaufen/Schleife
+* [ ] Reguläre Ausdrücke bauen
+* [ ] Datenbank erstellen
+* [ ] Daten ablegen
+* [ ] Interface für Anwendung bauen mit tkinter
+* [ ] Vortrag vorbereiten
 
 ## Datenextaktion
 Firmenname +
@@ -22,11 +22,11 @@ IBAN +
 Telefonnummer 
 Rechnungsnummer
 Ansprechpartner
-------
+
 Rechnungsdatum/Lieferdatum   
 Rechnungsbetrag -
 Positionen -
 Menge/Stückzahl -
------
+
 Zahlungsfrist +
 Lieferdatum +
