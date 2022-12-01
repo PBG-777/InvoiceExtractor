@@ -2,7 +2,7 @@ import PyPDF2
 import os
 import re
 
-
+# Allgemeiner Programmteil / danach folgen die Funktionen
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
@@ -30,8 +30,6 @@ def pdf_text_extraction():
         pageobj=pdfreader.getPage(x-1)
         text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
 
-        # Bitte hier unten die Regex einsetzen (wird später als eigene Funktion definiert)
-        # mit Print testen
 
         #Regex: Firmenname
         firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
