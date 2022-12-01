@@ -76,7 +76,6 @@ def pdf_text_extraction():
 
         # Regex Telefonnummer and Zahlungsfrist
         text_new = re.split("\n", text)
-        # print(text_new)
         for lst in text_new:
             if 'Telefon:' in lst or 'Tel:' in lst:
                 telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
@@ -89,6 +88,10 @@ def pdf_text_extraction():
                 datum_1 = datetime.datetime.strptime(datum, "%d.%m.%Y")
                 zahlungsfrist = datum_1 + datetime.timedelta(int(tags[0]))
                 current_dataset["Zahlungsfrist"] = str(zahlungsfrist).split()[0]
+            if 'Rechnungsnummer' in lst or 'Rechnungs-Nr.:' in lst or 'Rechnung Nr.' in lst:
+                rechungsnummer = re.findall('([0-9]{1,8})', lst)
+                current_dataset["Rechungsnummer"] = rechungsnummer[0]
+
 
 
         all_datasets.append(current_dataset)
