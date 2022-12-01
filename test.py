@@ -4,6 +4,8 @@ import re
 import datetime
 import sqlite3
 
+#TEST
+
 # Allgemeiner Programmteil / danach folgen die Funktionen
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
@@ -32,7 +34,7 @@ def pdf_text_extraction():
         x=pdfreader.numPages
         pageobj=pdfreader.getPage(x-1)
         text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
-        #print(text)
+
 
 
         #Regex: Firmenname
@@ -46,6 +48,24 @@ def pdf_text_extraction():
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
         datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
         current_dataset["Datum"] = datum
+
+
+        # Regex: IBAN
+        # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
+        # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
+        iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
+        if iban:
+            iban = re.sub(r"\s+","",iban[0])
+            current_dataset["iban"] = iban
+
+
+        # Regex: Gesamtbetrag
+        # Annahme: Komma als Dezimaltrennzeichen
+        gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
+        gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
+        gesamtbetrag = max(gesamtbetrag)
+        current_dataset["gesamtbetrag"] = gesamtbetrag
+
 
 
         # Regex: IBAN
@@ -93,9 +113,9 @@ file_list()
 print(pdf_text_extraction())
 
 
+
 # Datenbank  / Ideensammlung
 #conn = sqlite3.connect('file_name') # verbindung mit datenbank
 #c = conn.cursor()
 #c.execute('')
-
 #conn.close()
