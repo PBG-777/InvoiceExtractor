@@ -9,8 +9,8 @@ Thema: Extrahieren von Informationen aus PDF Dokumenten
 
 ## Projektstand
 * [X] Github Projekt anlegen
-* [ ] Daten aus Pdf extrahieren
-* [ ] Ordner vielen mit PDFs durchlaufen/Schleife
+* [X] Daten aus Pdf extrahieren
+* [X] Ordner vielen mit PDFs durchlaufen/Schleife
 * [ ] Reguläre Ausdrücke bauen
 * [ ] Datenbank erstellen
 * [ ] Daten ablegen
@@ -24,13 +24,9 @@ IBAN +
 Telefonnummer   
 Rechnungsnummer  
 Ansprechpartner  
-
-
 Rechnungsdatum/Lieferdatum  
 Rechnungsbetrag -  
 Positionen -  
 Menge/Stückzahl -  
-
-
 Zahlungsfrist +  
 Lieferdatum +
