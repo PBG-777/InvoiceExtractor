@@ -35,7 +35,7 @@ def pdf_text_extraction():
         pageobj=pdfreader.getPage(x-1)
         text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
 
-
+        #Regex noch in seperate Funktion packen
 
         #Regex: Firmenname
         firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
