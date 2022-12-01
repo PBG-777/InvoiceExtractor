@@ -2,8 +2,15 @@ import PyPDF2
 import os
 import re
 import datetime
+import sqlite3
 
+# Datenbank
+conn = sqlite3.connect('file_name') # verbindung mit datenbank
+c = conn.cursor()
+c.execute('')
 
+conn.close()
+    
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
