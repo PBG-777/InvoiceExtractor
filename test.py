@@ -4,7 +4,13 @@ import re
 import datetime
 import sqlite3
 
+# Datenbank
+conn = sqlite3.connect('file_name') # verbindung mit datenbank
+c = conn.cursor()
+c.execute('')
 
+conn.close()
+     #cgfhfgjfsg444
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
@@ -44,10 +50,15 @@ def pdf_text_extraction():
             current_dataset["firmenname"] = firmenname
 
 
+
+            print(firmenname.title())
+
+
         #Regex: Datum
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
         datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
         current_dataset["Datum"] = datum
+
 
 
         # Regex: IBAN
@@ -66,6 +77,26 @@ def pdf_text_extraction():
         gesamtbetrag = max(gesamtbetrag)
         current_dataset["gesamtbetrag"] = gesamtbetrag
 
+
+=======
+        print(datum)
+
+        # Regex: IBAN
+        # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
+        # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
+        iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
+        if iban:
+            iban = re.sub(r"\s+","",iban[0])
+            current_dataset["iban"] = iban
+            print(iban)
+
+        # Regex: Gesamtbetrag
+        # Annahme: Komma als Dezimaltrennzeichen
+        gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
+        gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
+        gesamtbetrag = max(gesamtbetrag)
+        current_dataset["gesamtbetrag"] = gesamtbetrag
+        print(gesamtbetrag)
 
         # Regex Telefonnummer and Zahlungsfrist
         text_new = re.split("\n", text)
@@ -95,9 +126,12 @@ file_list()
 print(pdf_text_extraction())
 
 
+
 # Datenbank  / Ideensammlung
 #conn = sqlite3.connect('file_name') # verbindung mit datenbank
 #c = conn.cursor()
 #c.execute('')
+=======
+
 
 #conn.close()
