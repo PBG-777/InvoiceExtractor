@@ -10,7 +10,7 @@ c = conn.cursor()
 c.execute('')
 
 conn.close()
-    
+     #cgfhfgjfsg444
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
