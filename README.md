@@ -11,22 +11,18 @@ Thema: Extrahieren von Informationen aus PDF Dokumenten
 * [X] Github Projekt anlegen
 * [X] Daten aus Pdf extrahieren
 * [X] Ordner vielen mit PDFs durchlaufen/Schleife
-* [ ] Reguläre Ausdrücke bauen
+* [X] Reguläre Ausdrücke bauen
 * [ ] Datenbank erstellen
 * [ ] Daten ablegen
 * [ ] Interface für Anwendung bauen mit tkinter
 * [ ] Vortrag vorbereiten
 
 ## Datenextaktion
-Firmenname +  
-Datum +  
-IBAN +   
+Firmenname 
+IBAN 
 Telefonnummer   
 Rechnungsnummer  
-Ansprechpartner  
 Rechnungsdatum/Lieferdatum  
-Rechnungsbetrag -  
-Positionen -  
-Menge/Stückzahl -  
-Zahlungsfrist +  
-Lieferdatum +
+Rechnungsbetrag 
+Zahlungsfrist 
+
