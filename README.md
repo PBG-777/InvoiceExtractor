@@ -18,11 +18,11 @@ Thema: Extrahieren von Informationen aus PDF Dokumenten
 * [ ] Vortrag vorbereiten
 
 ## Datenextaktion
-Firmenname 
-IBAN 
-Telefonnummer   
+Firmenname  
+IBAN  
+Telefonnummer  
 Rechnungsnummer  
 Rechnungsdatum/Lieferdatum  
-Rechnungsbetrag 
-Zahlungsfrist 
+Rechnungsbetrag  
+Zahlungsfrist  
 
