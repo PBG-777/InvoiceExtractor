@@ -25,7 +25,7 @@ def pdf_text_extraction():
     all_datasets = list()  # Hier werden die extrahierten Datensätze gesammelt
     for item in files:
         working_directory = os.getcwd()
-        file_path = working_directory + "\\" + folder + "\\" + item
+        file_path = os.path.join(working_directory, folder, item)
         fhandler = open(file_path, "rb")
         pdfreader= PyPDF2.PdfFileReader(fhandler)
         x=pdfreader.numPages
@@ -59,24 +59,9 @@ def regex_apply(text):
 
     # Regex: Gesamtbetrag
     # Annahme: Komma als Dezimaltrennzeichen
-    gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
-    gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
-    gesamtbetrag = max(gesamtbetrag)
-    current_dataset["gesamtbetrag"] = gesamtbetrag
-
-    # Regex: IBAN
-    # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
-    # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
-    iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
-    if iban:
-        iban = re.sub(r"\s+","",iban[0])
-        current_dataset["iban"] = iban
-
-    # Regex: Gesamtbetrag
-    # Annahme: Komma als Dezimaltrennzeichen
-    gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
-    gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
-    gesamtbetrag = max(gesamtbetrag)
+    alle_betraege = re.findall(r"\d{1,3}(?:\s?\d\d\d)* ?,\d\d", text)
+    alle_betraege_float = [float(i.replace(",",".").replace(" ","")) for i in alle_betraege]
+    gesamtbetrag = max(alle_betraege_float)
     current_dataset["gesamtbetrag"] = gesamtbetrag
 
     # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
