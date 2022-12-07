@@ -38,7 +38,7 @@ def pdf_text_extraction():
 def regex_apply(text):
     """Hier werden die Regex definiert und auf den Text aus der Fkt. pdf_text_extraction angewendet"""
     #Regex: Firmenname
-    missing = 'missing'
+    missing = '----'
     current_dataset = dict()
     firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
     # Firmenname final  (von Email Adresse extrahiert, Achtung aktuell enthält nur eine Rechnung eine Mailadresse, deswegen sind einige Listen leer)
