@@ -66,16 +66,6 @@ def regex_apply(text):
     else:
         current_dataset["IBAN"] = missing
 
-    # Regex: IBAN
-    # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
-    # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
-    iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
-    if iban:
-        iban = re.sub(r"\s+", "", iban[0])
-        current_dataset["IBAN"] = iban
-    else:
-        current_dataset["IBAN"] = missing
-
     # Regex: Gesamtbetrag
     # Annahme: Komma als Dezimaltrennzeichen
     alle_betraege = re.findall(r"\d{1,3}(?:\s?\d\d\d)* ?,\d\d", text)
