@@ -25,7 +25,8 @@ def pdf_text_extraction():
     all_datasets = list()  # Hier werden die extrahierten Datensätze gesammelt
     for item in files:
         working_directory = os.getcwd()
-        file_path = working_directory + "\\" + folder + "\\" + item
+        #file_path = working_directory + "\\" + folder + "\\" + item
+        file_path = os.path.join(working_directory, folder, item)
         fhandler = open(file_path, "rb")
         pdfreader= PyPDF2.PdfFileReader(fhandler)
         x=pdfreader.numPages
@@ -40,8 +41,8 @@ def regex_apply(text):
     #Regex: Firmenname
     missing = '----'
     current_dataset = dict()
-    firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
     # Firmenname final  (von Email Adresse extrahiert, Achtung aktuell enthält nur eine Rechnung eine Mailadresse, deswegen sind einige Listen leer)
+    firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
     if firmenname:
         firmenname = firmenname[0]
         current_dataset["FIRMENNAME"] = firmenname
@@ -66,53 +67,32 @@ def regex_apply(text):
     else:
         current_dataset["IBAN"] = missing
 
-    # Regex: IBAN
-    # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
-    # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
-    iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
-    if iban:
-        iban = re.sub(r"\s+", "", iban[0])
-        current_dataset["IBAN"] = iban
-    else:
-        current_dataset["IBAN"] = missing
-
     # Regex: Gesamtbetrag
     # Annahme: Komma als Dezimaltrennzeichen
-    gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
-    gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
-    gesamtbetrag = max(gesamtbetrag)
+    alle_betraege = re.findall(r"\d{1,3}(?:\s?\d\d\d)* ?,\d\d", text)
+    alle_betraege_float = [float(i.replace(",",".").replace(" ","")) for i in alle_betraege]
+    gesamtbetrag = max(alle_betraege_float)
     if gesamtbetrag:
         current_dataset["GESAMTBETRAG"] = str(gesamtbetrag)
-    else:
-        current_dataset["GESAMTBETRAG"] = missing
-
-    # Regex: Gesamtbetrag
-    # Annahme: Komma als Dezimaltrennzeichen
-    gesamtbetrag = re.findall(r"\d{1,3}(?:\s?\d\d\d)*,\d\d", text)
-    gesamtbetrag = [float(i.replace(",",".").replace(" ","")) for i in gesamtbetrag]
-    gesamtbetrag = max(gesamtbetrag)
-    if gesamtbetrag:
-        current_dataset["GESAMTBETRAG"] = gesamtbetrag
     else:
         current_dataset["GESAMTBETRAG"] = missing
 
     # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
     text_new = re.split("\n", text)
     for lst in text_new:
-        if 'Telefon:' in lst or 'Tel:' in lst:
-            telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
-            if telefonnummer:
-                current_dataset["TELEFONNUMMER"] = telefonnummer[0]
+        if 'Rechnungsnummer' in lst or 'Rechnungs-Nr.:' in lst or 'Rechnung Nr.' in lst:
+            rechungsnummer = re.findall('([0-9]{1,8})', lst)
+            if rechungsnummer:
+                current_dataset["RECHNUNGSNUMMER"] = rechungsnummer[0]
             else:
-                current_dataset["TELEFONNUMMER"] = missing
+                current_dataset["RECHNUNGSNUMMER"] = missing
     for lst in text_new:
-        if 'Der Gesamtbetrag ist bis zum'in lst or 'Fälligkeitsdatum:' in lst:
+        if 'Der Gesamtbetrag ist bis zum'in lst or 'Fälligkeitsdatum:' in lst or 'bis zum' in lst:
             zahlungsfrist = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",lst)
             if zahlungsfrist:
                 current_dataset["ZAHLUNGSFRIST"] = zahlungsfrist[0]
             else:
                 current_dataset["ZAHLUNGSFRIST"] = missing
-    for lst in text_new:
         if 'Zahlbar innerhalb' in lst or 'Zahlungsbedingungen' in lst:
             tags = re.findall("[0-9]{2}",lst)
             datum_1 = datetime.datetime.strptime(datum, "%d.%m.%Y")
@@ -122,18 +102,20 @@ def regex_apply(text):
             else:
                 current_dataset["ZAHLUNGSFRIST"] = missing
     for lst in text_new:
-        if 'Rechnungsnummer' in lst or 'Rechnungs-Nr.:' in lst or 'Rechnung Nr.' in lst:
-            rechungsnummer = re.findall('([0-9]{1,8})', lst)
-            if rechungsnummer:
-                current_dataset["RECHNUNGSNUMMER"] = rechungsnummer[0]
+        if 'Telefon:' in lst or 'Tel:' in lst:
+            telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
+            if telefonnummer:
+                current_dataset["TELEFONNUMMER"] = telefonnummer[0]
             else:
-                current_dataset["RECHNUNGSNUMMER"] = missing
+                current_dataset["TELEFONNUMMER"] = missing
+
+
     return(current_dataset)
 
 
 #führt aus
 file_list()
-#print(pdf_text_extraction())
+print(pdf_text_extraction())
 
 
 
