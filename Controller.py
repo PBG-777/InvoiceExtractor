@@ -78,36 +78,33 @@ def regex_apply(text):
         current_dataset["GESAMTBETRAG"] = missing
 
     # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
-    text_new = re.split("\n", text)
-    for lst in text_new:
-        if 'Rechnungsnummer' in lst or 'Rechnungs-Nr.:' in lst or 'Rechnung Nr.' in lst:
-            rechungsnummer = re.findall('([0-9]{1,8})', lst)
-            if rechungsnummer:
-                current_dataset["RECHNUNGSNUMMER"] = rechungsnummer[0]
-            else:
-                current_dataset["RECHNUNGSNUMMER"] = missing
-    for lst in text_new:
-        if 'Der Gesamtbetrag ist bis zum'in lst or 'Fälligkeitsdatum:' in lst or 'bis zum' in lst:
-            zahlungsfrist = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",lst)
-            if zahlungsfrist:
-                current_dataset["ZAHLUNGSFRIST"] = zahlungsfrist[0]
-            else:
-                current_dataset["ZAHLUNGSFRIST"] = missing
-        if 'Zahlbar innerhalb' in lst or 'Zahlungsbedingungen' in lst:
-            tags = re.findall("[0-9]{2}",lst)
-            datum_1 = datetime.datetime.strptime(datum, "%d.%m.%Y")
-            zahlungsfrist = datum_1 + datetime.timedelta(int(tags[0]))
-            if zahlungsfrist:
-                current_dataset["ZAHLUNGSFRIST"] = str(zahlungsfrist).split()[0]
-            else:
-                current_dataset["ZAHLUNGSFRIST"] = missing
-    for lst in text_new:
-        if 'Telefon:' in lst or 'Tel:' in lst:
-            telefonnummer = re.findall("[0-9]{4}[ ][/][ ]+?(?:\d\s?){7,11}|(?:\d\s?){7,11}", lst)
-            if telefonnummer:
-                current_dataset["TELEFONNUMMER"] = telefonnummer[0]
-            else:
-                current_dataset["TELEFONNUMMER"] = missing
+
+    rechnung = re.findall('Rechnungsnummer:\s?[0-9]{1,8}|Rechnungs-Nr.:\s?[0-9]{1,8}|Rechnung Nr.\s?[0-9]{1,8}', text)
+    rechungsnummer = re.findall('([0-9]{1,8})', str(rechnung))
+    if rechungsnummer:
+        current_dataset["RECHNUNGSNUMMER"] = rechungsnummer[0]
+
+    betrag = re.findall("Der Gesamtbetrag ist bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
+                        "Fälligkeitsdatum:\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
+                        "bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}",text)
+    zahlungsfrist = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})", str(betrag))
+    if zahlungsfrist:
+        current_dataset["ZAHLUNGSFRIST"] = zahlungsfrist[0]
+    else:
+        betrag = re.findall("Zahlbar innerhalb\s?[0-9]{2}|Zahlungsbedingungen:\s?[0-9]{2}",text)
+        tag = re.findall("[0-9]{2}", str(betrag))
+        datum_1 = datetime.datetime.strptime(datum, "%d.%m.%Y")
+        zahlungsfrist = datum_1 + datetime.timedelta(int(tag[0]))
+        if zahlungsfrist:
+            current_dataset["ZAHLUNGSFRIST"] = str(zahlungsfrist).split()[0]
+
+
+    # print(text)
+    telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
+    tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
+    if tel:
+        current_dataset["TELEFONNUMMER"] = tel[0]
+
 
 
     return(current_dataset)
@@ -115,6 +112,7 @@ def regex_apply(text):
 
 #führt aus
 file_list()
+#pdf_text_extraction()
 print(pdf_text_extraction())
 
 
