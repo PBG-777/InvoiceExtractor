@@ -100,7 +100,7 @@ def regex_apply(text):
 
 
     # print(text)
-    telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
+    telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
     tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
     if tel:
         current_dataset["TELEFONNUMMER"] = tel[0]
@@ -113,7 +113,7 @@ def regex_apply(text):
 #führt aus
 file_list()
 #pdf_text_extraction()
-print(pdf_text_extraction())
+#print(pdf_text_extraction())
 
 
 
