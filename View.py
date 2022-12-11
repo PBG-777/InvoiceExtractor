@@ -31,8 +31,13 @@ class View():
         frameOben = tk.Frame(root, bd=1, highlightthickness=1, highlightbackground="light grey", width=1650, height=400)
         frameOben.grid(row=1, column=0, padx=2, pady=2)
 
+        prev_button = tk.Button(root, text='< Prev', fg='green', justify='center', font=('Arial', 12, 'bold'))
+        prev_button.grid(row=2, column=0, ipadx=50)
+        next_button = tk.Button(root, text='Next >', fg='green', justify='center', font=('Arial', 12, 'bold'))
+        next_button.grid(row=3, column=0, ipadx=50)
+
         frame_head1 = tk.Frame(root, bd=2, highlightthickness=0, width=1650, height=50)
-        frame_head1.grid(row=2, column=0)
+        frame_head1.grid(row=5, column=0)
         open_frame_head1 = tk.Frame(frame_head1, bd=2)
         label_oeffnen_liste1 = tk.Label(open_frame_head1, text="Rechnungsdaten im Grafische Darstellung", fg='blue', justify='center',
                                        font=('Arial', 14, 'bold'))
@@ -40,7 +45,7 @@ class View():
         open_frame_head1.pack()
 
         frameUnten = tk.Frame(root, bd=1, highlightthickness=1, highlightbackground="light grey", width=1650,height=600)
-        frameUnten.grid(row=3, column=0, padx=2, pady=2)
+        frameUnten.grid(row=6, column=0, padx=2, pady=2)
 
         for i in range(len(pdf_text_extraction())):
             for k in range(len(pdf_text_extraction()[0])):
@@ -57,5 +62,5 @@ class View():
         if __name__ == "__main__":
             root.mainloop()
 
-m = View('1650x600', "PDFs extraction")
+m = View('1650x900', "PDFs extraction")
 m.display()
