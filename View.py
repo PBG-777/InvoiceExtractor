@@ -46,9 +46,9 @@ class View():
         frame_head = tk.Frame(self.root, bd=1, highlightthickness=0, width=1650, height=50)
         frame_head.grid(row=row_number, column=3)
         open_frame_head = tk.Frame(frame_head, bd=2)
-        label_oeffnen_liste = tk.Label(open_frame_head, text=title, fg='blue', justify='center',
+        label_title = tk.Label(open_frame_head, text=title, fg='blue', justify='center',
                                        font=('Arial', 14, 'bold'))
-        label_oeffnen_liste.grid(row=0, column=0, padx=10, pady=y)
+        label_title.grid(row=0, column=0, padx=10, pady=y)
         open_frame_head.pack()
     # def create_button(self):
 
