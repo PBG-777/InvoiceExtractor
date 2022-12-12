@@ -12,7 +12,7 @@ folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 def file_list():
     """Ordner in einer Schleife durchlaufen, alle Dateinamen extrahieren und in Liste speichern"""
     #https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
-    directory = "rechnungen"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
+    directory = "rechnungen_temp"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
     for file in os.listdir(directory):
          filename = os.fsdecode(file)
          if filename.endswith(".pdf"):
@@ -39,23 +39,18 @@ def pdf_text_extraction():
 def regex_apply(text):
     """Hier werden die Regex definiert und auf den Text aus der Fkt. pdf_text_extraction angewendet"""
     #Regex: Firmenname
-    missing = '----'
     current_dataset = dict()
     # Firmenname final  (von Email Adresse extrahiert, Achtung aktuell enthält nur eine Rechnung eine Mailadresse, deswegen sind einige Listen leer)
     firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
     if firmenname:
         firmenname = firmenname[0]
         current_dataset["FIRMENNAME"] = firmenname
-    else:
-        current_dataset["FIRMENNAME"] = missing
 
     #Regex: Datum
     datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
     datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
     if datum:
         current_dataset["DATUM"] = datum
-    else:
-        current_dataset["DATUM"] = missing
 
     # Regex: IBAN
     # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
@@ -64,8 +59,6 @@ def regex_apply(text):
     if iban:
         iban = re.sub(r"\s+","",iban[0])
         current_dataset["IBAN"] = iban
-    else:
-        current_dataset["IBAN"] = missing
 
     # Regex: Gesamtbetrag
     # Annahme: Komma als Dezimaltrennzeichen
@@ -74,8 +67,6 @@ def regex_apply(text):
     gesamtbetrag = max(alle_betraege_float)
     if gesamtbetrag:
         current_dataset["GESAMTBETRAG"] = str(gesamtbetrag)
-    else:
-        current_dataset["GESAMTBETRAG"] = missing
 
     # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
 
