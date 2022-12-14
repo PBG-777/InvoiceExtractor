@@ -45,12 +45,16 @@ def regex_apply(text):
     if firmenname:
         firmenname = firmenname[0]
         current_dataset["FIRMENNAME"] = firmenname
+    else:
+        current_dataset["FIRMENNAME"] = "none"
 
     #Regex: Datum
     datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
     datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
     if datum:
         current_dataset["DATUM"] = datum
+    else:
+        current_dataset["DATUM"] = "none"
 
     # Regex: IBAN
     # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
@@ -59,6 +63,8 @@ def regex_apply(text):
     if iban:
         iban = re.sub(r"\s+","",iban[0])
         current_dataset["IBAN"] = iban
+    else:
+        current_dataset["IBAN"] = "none"
 
     # Regex: Gesamtbetrag
     # Annahme: Komma als Dezimaltrennzeichen
@@ -67,6 +73,8 @@ def regex_apply(text):
     gesamtbetrag = max(alle_betraege_float)
     if gesamtbetrag:
         current_dataset["GESAMTBETRAG"] = str(gesamtbetrag)
+    else:
+        current_dataset["GESAMTBETRAG"] = "none"
 
     # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
 
@@ -74,6 +82,8 @@ def regex_apply(text):
     rechungsnummer = re.findall('([0-9]{1,8})', str(rechnung))
     if rechungsnummer:
         current_dataset["RECHNUNGSNUMMER"] = rechungsnummer[0]
+    else:
+        current_dataset["RECHNUNGSNUMMER"] = "none"
 
     betrag = re.findall("Der Gesamtbetrag ist bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
                         "Fälligkeitsdatum:\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
@@ -88,14 +98,16 @@ def regex_apply(text):
         zahlungsfrist = datum_1 + datetime.timedelta(int(tag[0]))
         if zahlungsfrist:
             current_dataset["ZAHLUNGSFRIST"] = str(zahlungsfrist).split()[0]
-
+        else:
+            current_dataset["ZAHLUNGSFRIST"] = "none"
 
     # print(text)
     telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
     tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
     if tel:
         current_dataset["TELEFONNUMMER"] = tel[0]
-
+    else:
+        current_dataset["TELEFONNUMMER"] = "none"
 
 
     return(current_dataset)
