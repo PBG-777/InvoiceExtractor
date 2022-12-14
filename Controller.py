@@ -2,7 +2,6 @@ import PyPDF2
 import os
 import re
 import datetime
-import sqlite3
 
 # Allgemeiner Programmteil / danach folgen die Funktionen
 files = list()          #hier kommen die Dateinamen rein

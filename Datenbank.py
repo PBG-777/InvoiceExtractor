@@ -3,10 +3,9 @@
 import sqlite3
 from Controller import pdf_text_extraction
 
+
 conn = sqlite3.connect('rechnung_data.db')   # Verbindung mit Datenbank "rechnung_data.db". Wird erstellt falls nicht vorhanden.
 cur = conn.cursor() # Vergleichbar mit open(). Ermöglicht Funktionen der Bibliothek sqlite3.
-
-
 
 cur.execute('DROP TABLE IF EXISTS Database') # Löschen der vorhandenen Datenbank, damit neue Datenbank erstellt werden kann. (Clearing)
 cur.execute('CREATE TABLE Database (Firmenname TEXT, Datum TEXT, Iban TEXT, Gesamtbetrag TEXT, Telefonnummer TEXT, Rechnungsnummer TEXT, Zahlungsfrist TEXT)')
@@ -18,13 +17,9 @@ rechnungen_normiert = [{'firmenname': 'fswfaki', 'Datum': '01.12.2022', 'iban': 
 # Verbesserungsbedarf Data_input: Fehlende Dictionary inputs auf None o.ä. setzen.
 # Verbesserungsbedarf Programmierstil: Einheitliche Groß- bzw. Kleinschreibung sowie korrekte Rechtschreibung beachten.
 
-
-print(pdf_text_extraction())
-
 for element in pdf_text_extraction():         # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
-    cur.execute('INSERT INTO Database VALUES (?,?,?,?,?,?,?) ', (element['firmenname'], element['Datum'], element['iban'], element['gesamtbetrag'], element['Telefonnummer'], element['Rechungsnummer'], element['Zahlungsfrist']))
+    cur.execute('INSERT INTO Database VALUES (?,?,?,?,?,?,?) ', (element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'], element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
     # Für jedes einzelne Dictionary innerhalb der Liste werden die zugehörigen Werte der Keys in die Datenbank Database als VALUES eingepflegt.
-
 
 cur.execute('SELECT * FROM Database')       # Es werden alle Inhalte der Datenbank "Database" ausgewählt
 inhalt = cur.fetchall()                     # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
