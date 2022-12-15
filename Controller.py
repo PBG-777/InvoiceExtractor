@@ -97,7 +97,6 @@ def regex_apply(text):
         current_dataset["TELEFONNUMMER"] = tel[0]
 
 
-
     return(current_dataset)
 
 

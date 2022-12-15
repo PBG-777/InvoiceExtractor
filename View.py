@@ -42,9 +42,9 @@ class View():
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     # eine Methode, Titel zu vergaben
-    def get_title(self, row_number, title, y):
+    def get_title(self, row_number,column_num, title, y):
         frame_head = tk.Frame(self.root, bd=1, highlightthickness=0, width=1650, height=50)
-        frame_head.grid(row=row_number, column=3)
+        frame_head.grid(row=row_number, column=column_num)
         open_frame_head = tk.Frame(frame_head, bd=2)
         label_title = tk.Label(open_frame_head, text=title, fg='blue', justify='center',
                                        font=('Arial', 14, 'bold'))
@@ -60,8 +60,10 @@ class View():
         self.root.title(self.title)
 
         pdf_data = pdf_text_extraction()   # Daten aus PDFs einlesen
+        pdf_number = pdf_data.__len__()
 
-        self.get_title(0, 'Rechnungsdaten', 1)
+        self.get_title(0, 3, 'Rechnungsdaten',  1)
+        self.get_title(1, 0, f'Anzhal die Einträger:  {pdf_number}',  3)
         # Daten fuer Tabellengenerierung umwandeln
         lst= []
         for num in range(len(pdf_data)):
@@ -78,22 +80,22 @@ class View():
             for k in range(len(pdf_data[0])):
                 h = Entry(self.root, width=21, fg='green', justify='center',
                           font=('Arial', 14, 'bold'))
-                h.grid(row=1, column=k)
+                h.grid(row=2, column=k)
                 h.insert(END, f'{header[k]}')
                 e = Entry(self.root, width=21, fg='black', justify='center',
                           font=('Arial', 14, 'bold'))
 
-                e.grid(row=i+2, column=k)
+                e.grid(row=i+3, column=k)
                 e.insert(END, f'{lst[i].get(k)}')
 
         next_button = tk.Button(self.root, text='Next >', fg='green', justify='center', font=('Arial', 12, 'bold'))
-        next_button.grid(row=i+3, column=3, ipadx=50, pady=10)
+        next_button.grid(row=i+4, column=3, ipadx=50, pady=10)
         prev_button = tk.Button(self.root, text='< Prev', fg='green', justify='center', font=('Arial', 12, 'bold'))
-        prev_button.grid(row=i+4, column=3, ipadx=50)
+        prev_button.grid(row=i+5, column=3, ipadx=50)
 
-        self.get_title(i+5, 'Grafische Darstellung', 10)
+        self.get_title(i+6, 3, 'Grafische Darstellung',  10)
         b = tk.Button(self.root, text="Plot Gesamtbetrag vs. Datum", font=('Arial', 12, 'bold'), command=self.__plot_gesambetrag)
-        b.grid(row=i+6, column=3, pady=1)
+        b.grid(row=i+7, column=3, pady=1)
 
         if __name__ == "__main__":
             self.root.mainloop()
