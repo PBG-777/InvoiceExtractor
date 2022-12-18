@@ -101,5 +101,6 @@ class View():
         if __name__ == "__main__":
             self.root.mainloop()
 
+
 m = View('1650x500', "PDFs extraction")
 m.display()
