@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from Controller import pdf_text_extraction
+from Datenbank import get_Data
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates
@@ -65,10 +66,10 @@ class View():
         self.get_title(0, 3, 'Rechnungsdaten',  1)
         self.get_title(1, 0, f'Anzhal die Einträger:  {pdf_number}',  3)
         # Daten fuer Tabellengenerierung umwandeln
-        lst= []
-        for num in range(len(pdf_data)):
-            new_data = {i:v for i,(k,v) in enumerate(pdf_data[num].items(), 0)}    # Ersetze keys in den dictionaries durch Zahlen
-            lst.append(new_data)
+        #lst= [('beer', '10.02.2022', 'DE49896921211468845544', '1394.06', '55482', '13.03.2022', ' 00155936827'), ('drub', '12.07.2022', 'DE94314562087091634579', '4656.78', '64728', '12.07.2022', 'none'), ('groettner', '17.08.2022', 'DE28913193442176104714', '535.44', '47039', '31.08.2022', ' 09007 54706'), ('troest', '03.09.2022', 'DE22660223450076279125', '3121.42', '56869', '28.09.2022', ' 0769930024'), ('hermighausen', '01.12.2022', 'DE81045093227175420355', '5628.9', '5946', '15.12.2022', 'none'), ('muellertest', '21.11.2022', 'DE051882000000001928', '358.79', '1234', '28.11.2022', '0234 / 500 60 10')]
+        # for num in range(len(pdf_data)):
+        #     new_data = {i:v for i,(k,v) in enumerate(pdf_data[num].items(), 0)}    # Ersetze keys in den dictionaries durch Zahlen
+        #     lst.append(new_data)
 
         # Erstelle Ueberschriften aus keys des Dictionary
         header = []
@@ -86,7 +87,7 @@ class View():
                           font=('Arial', 14, 'bold'))
 
                 e.grid(row=i+3, column=k)
-                e.insert(END, f'{lst[i].get(k)}')
+                e.insert(END, f'{get_Data()[i][k]}')
 
         next_button = tk.Button(self.root, text='Next >', fg='green', justify='center', font=('Arial', 12, 'bold'))
         next_button.grid(row=i+4, column=3, ipadx=50, pady=10)

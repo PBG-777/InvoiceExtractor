@@ -16,14 +16,14 @@ rechnungen_normiert = [{'firmenname': 'fswfaki', 'Datum': '01.12.2022', 'iban': 
 # Listen-Elemente auf 7 dictionaries normiert.
 # Verbesserungsbedarf Data_input: Fehlende Dictionary inputs auf None o.ä. setzen.
 # Verbesserungsbedarf Programmierstil: Einheitliche Groß- bzw. Kleinschreibung sowie korrekte Rechtschreibung beachten.
+def get_Data():
+    for element in pdf_text_extraction():         # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
+        cur.execute('INSERT INTO Database VALUES (?,?,?,?,?,?,?) ', (element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'], element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
+        # Für jedes einzelne Dictionary innerhalb der Liste werden die zugehörigen Werte der Keys in die Datenbank Database als VALUES eingepflegt.
 
-for element in pdf_text_extraction():         # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
-    cur.execute('INSERT INTO Database VALUES (?,?,?,?,?,?,?) ', (element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'], element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
-    # Für jedes einzelne Dictionary innerhalb der Liste werden die zugehörigen Werte der Keys in die Datenbank Database als VALUES eingepflegt.
-
-cur.execute('SELECT * FROM Database')       # Es werden alle Inhalte der Datenbank "Database" ausgewählt
-inhalt = cur.fetchall()                     # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
-conn.commit()                               # Ausführung der sqlite3-Anweisungen
-
-print(inhalt)                               # Print der ausgeworfenen Werte der Datenbank, scheint alles richtig zu sein :)
+    cur.execute('SELECT * FROM Database')       # Es werden alle Inhalte der Datenbank "Database" ausgewählt
+    inhalt = cur.fetchall()                     # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
+    conn.commit()                               # Ausführung der sqlite3-Anweisungen
+    return  inhalt
+#print(inhalt)                               # Print der ausgeworfenen Werte der Datenbank, scheint alles richtig zu sein :)
 
