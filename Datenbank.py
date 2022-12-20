@@ -1,8 +1,9 @@
 # Implementierung Datenbank via sqlite3:
 
 import sqlite3
-from Controller import pdf_text_extraction
+from Controller import Extraction
 
+controller_build = Extraction()
 
 conn = sqlite3.connect('rechnung_data.db')   # Verbindung mit Datenbank "rechnung_data.db". Wird erstellt falls nicht vorhanden.
 cur = conn.cursor() # Vergleichbar mit open(). Ermöglicht Funktionen der Bibliothek sqlite3.
@@ -17,7 +18,7 @@ rechnungen_normiert = [{'firmenname': 'fswfaki', 'Datum': '01.12.2022', 'iban': 
 # Verbesserungsbedarf Data_input: Fehlende Dictionary inputs auf None o.ä. setzen.
 # Verbesserungsbedarf Programmierstil: Einheitliche Groß- bzw. Kleinschreibung sowie korrekte Rechtschreibung beachten.
 
-for element in pdf_text_extraction():         # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
+for element in controller_build.pdf_text_extraction():         # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
     cur.execute('INSERT INTO Database VALUES (?,?,?,?,?,?,?) ', (element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'], element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
     # Für jedes einzelne Dictionary innerhalb der Liste werden die zugehörigen Werte der Keys in die Datenbank Database als VALUES eingepflegt.
 
