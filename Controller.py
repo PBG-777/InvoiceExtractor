@@ -9,7 +9,7 @@ files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 # folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
 
-class Controller_class:
+class Extraction:
     def __init__(self):
         """Konstruktor"""
         pass
@@ -118,4 +118,4 @@ class Controller_class:
 
         return(current_dataset)
 
-controller_build = Controller_class()
+controller_build = Extraction()
