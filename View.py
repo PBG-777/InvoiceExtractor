@@ -3,7 +3,7 @@ from tkinter import *
 from Controller import pdf_text_extraction
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
-import matplotlib.dates
+import matplotlib.dates as mdates
 from datetime import datetime
 
 class View():
@@ -24,18 +24,25 @@ class View():
         for set in pdf_data:
             if "GESAMTBETRAG" in set and "DATUM" in set:
                 x_values.append(datetime.strptime(set["DATUM"], "%d.%m.%Y"))
-                y_values.append(set["GESAMTBETRAG"])
+                y_values.append(float(set["GESAMTBETRAG"]))
 
         # Zeichne
         fig = Figure(figsize=(5, 4), dpi=200)
-        dates = matplotlib.dates.date2num(x_values)
+        dates = mdates.date2num(x_values)
         ax = fig.add_subplot(111)
+
         ax.plot_date(dates, y_values)
+        #ax.hist(dates, weights=y_values)
 
         # Achsenformatierung: Nur Monate auf X-Achse
-        ax.xaxis.set_major_locator(matplotlib.dates.MonthLocator())
-        #ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%m'))
+        locator = mdates.AutoDateLocator()
+        ax.xaxis.set_major_locator(locator)
+        ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
         fig.autofmt_xdate()
+
+        ax.set_xlabel('Datum')
+        ax.set_ylabel('Rechnungsbetrag')
+        ax.grid(True)
 
         canvas = FigureCanvasTkAgg(fig, master=matplot_window)
         canvas.draw()
@@ -92,8 +99,8 @@ class View():
         prev_button.grid(row=i+4, column=3, ipadx=50)
 
         self.get_title(i+5, 'Grafische Darstellung', 10)
-        b = tk.Button(self.root, text="Plot Gesamtbetrag vs. Datum", font=('Arial', 12, 'bold'), command=self.__plot_gesambetrag)
-        b.grid(row=i+6, column=3, pady=1)
+        plot_button = tk.Button(self.root, text="Plot Gesamtbetrag vs. Datum", font=('Arial', 12, 'bold'), command=self.__plot_gesambetrag)
+        plot_button.grid(row=i+6, column=3, pady=1)
 
         if __name__ == "__main__":
             self.root.mainloop()
