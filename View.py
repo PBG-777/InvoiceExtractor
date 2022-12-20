@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from Controller import pdf_text_extraction
+from Controller import Controller_class
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates
@@ -15,8 +15,8 @@ class View():
     def __plot_gesambetrag(self):
         matplot_window = tk.Toplevel(self.root)
         matplot_window.wm_title("Gesamtbetrag vs. Datum")
-
-        pdf_data = pdf_text_extraction()  # Daten aus PDFs einlesen
+        controller_build = Controller_class()         #Klasse Controller, neue Instanz erstellen    NEU
+        pdf_data = controller_build.pdf_text_extraction()  # Daten aus PDFs einlesen   NEU
 
         # Erstelle Vektoren
         x_values = []
@@ -58,8 +58,9 @@ class View():
         self.root = tk.Tk()
         self.root.geometry(self.geometry)
         self.root.title(self.title)
+        controller_build = Controller_class()               #Klasse Controller, neue Instanz erstellen    NEU
+        pdf_data = controller_build.pdf_text_extraction()  #Klasse Controller, aun    NEU
 
-        pdf_data = pdf_text_extraction()   # Daten aus PDFs einlesen
 
         self.get_title(0, 'Rechnungsdaten', 1)
         # Daten fuer Tabellengenerierung umwandeln
