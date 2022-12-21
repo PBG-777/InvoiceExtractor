@@ -3,7 +3,6 @@ import os
 import re
 import datetime
 
-
 # Allgemeiner Programmteil / danach folgen die Funktionen
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
@@ -115,7 +114,7 @@ class Extraction:
         else:
             current_dataset["TELEFONNUMMER"] = "none"
 
-
         return(current_dataset)
+
 
 controller_build = Extraction()
