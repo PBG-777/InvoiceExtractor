@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from Controller import pdf_text_extraction
-from Datenbank import get_Data
+from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates
@@ -9,6 +9,7 @@ from datetime import datetime
 
 class View():
     def __init__(self, geometry, title):
+        self.root = tk.Tk()
         self.geometry = geometry
         self.title = title
 
@@ -55,29 +56,24 @@ class View():
 
 
 
-    def display(self):
-        self.root = tk.Tk()
-        self.root.geometry(self.geometry)
-        self.root.title(self.title)
+    def display(self, offset):
+        limit = 2
+        database = db('localhost', 'root', 'root', 'rechnung_data')
+        rechnungen_content = database.get_data(offset, limit)
 
         pdf_data = pdf_text_extraction()   # Daten aus PDFs einlesen
         pdf_number = pdf_data.__len__()
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)
         self.get_title(1, 0, f'Anzhal die Einträger:  {pdf_number}',  3)
-        # Daten fuer Tabellengenerierung umwandeln
-        #lst= [('beer', '10.02.2022', 'DE49896921211468845544', '1394.06', '55482', '13.03.2022', ' 00155936827'), ('drub', '12.07.2022', 'DE94314562087091634579', '4656.78', '64728', '12.07.2022', 'none'), ('groettner', '17.08.2022', 'DE28913193442176104714', '535.44', '47039', '31.08.2022', ' 09007 54706'), ('troest', '03.09.2022', 'DE22660223450076279125', '3121.42', '56869', '28.09.2022', ' 0769930024'), ('hermighausen', '01.12.2022', 'DE81045093227175420355', '5628.9', '5946', '15.12.2022', 'none'), ('muellertest', '21.11.2022', 'DE051882000000001928', '358.79', '1234', '28.11.2022', '0234 / 500 60 10')]
-        # for num in range(len(pdf_data)):
-        #     new_data = {i:v for i,(k,v) in enumerate(pdf_data[num].items(), 0)}    # Ersetze keys in den dictionaries durch Zahlen
-        #     lst.append(new_data)
-
         # Erstelle Ueberschriften aus keys des Dictionary
         header = []
         for head in pdf_data[0].keys():
             header.append(head)
 
         # Erstelle Tabelle
-        for i in range(len(pdf_data)):
+        i = 0
+        for i in range(len(rechnungen_content)):
             for k in range(len(pdf_data[0])):
                 h = Entry(self.root, width=21, fg='green', justify='center',
                           font=('Arial', 14, 'bold'))
@@ -87,12 +83,27 @@ class View():
                           font=('Arial', 14, 'bold'))
 
                 e.grid(row=i+3, column=k)
-                e.insert(END, f'{get_Data()[i][k]}')
+                e.insert(END, f'{rechnungen_content[i][k]}')
 
-        next_button = tk.Button(self.root, text='Next >', fg='green', justify='center', font=('Arial', 12, 'bold'))
+        back = offset - limit
+        next = offset + limit
+        next_button = tk.Button(self.root, text='Next >', command=lambda: self.display(next),
+                                fg='green', justify='center', font=('Arial', 12, 'bold'))
+        print(i)
         next_button.grid(row=i+4, column=3, ipadx=50, pady=10)
-        prev_button = tk.Button(self.root, text='< Prev', fg='green', justify='center', font=('Arial', 12, 'bold'))
+        prev_button = tk.Button(self.root, text='< Prev', command=lambda: self.display(back),
+                                fg='green', justify='center', font=('Arial', 12, 'bold'))
         prev_button.grid(row=i+5, column=3, ipadx=50)
+
+        if (pdf_number <= next):
+            next_button["state"] = "disabled"  # disable next button
+        else:
+            next_button["state"] = "active"  # enable next button
+
+        if (back >= 0):
+            prev_button["state"] = "active"  # enable Prev button
+        else:
+            prev_button["state"] = "disabled"  # disable Prev button
 
         self.get_title(i+6, 3, 'Grafische Darstellung',  10)
         b = tk.Button(self.root, text="Plot Gesamtbetrag vs. Datum", font=('Arial', 12, 'bold'), command=self.__plot_gesambetrag)
@@ -103,4 +114,4 @@ class View():
 
 
 m = View('1650x500', "PDFs extraction")
-m.display()
+m.display(0)
