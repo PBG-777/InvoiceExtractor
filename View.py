@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import *
 from Controller import Extraction
+from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
+import matplotlib.dates
 from datetime import datetime
 
 class View():
@@ -61,7 +63,7 @@ class View():
 
 
     def display(self, offset):
-        limit = 2
+        limit = 8
         database = db('localhost', 'root', 'root', 'rechnung_data')
         rechnungen_content = database.get_data(offset, limit)
 
