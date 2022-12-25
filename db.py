@@ -38,6 +38,13 @@ class db:
                 element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'],
                 element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
             self.my_db.commit()
+
+    # get number of rows
+    def count_entry(self):
+        cur = self.my_db.cursor()
+        cur.execute("SELECT COUNT(*) from rechnungen")
+        result = cur.fetchone()
+        return result.__getitem__(0)
     def get_data(self, offset, limit):
         self.create_Table()
         self.set_Data()

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from Controller import Extraction
+from Controller import *
 from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
@@ -58,31 +58,26 @@ class View():
                                        font=('Arial', 14, 'bold'))
         label_title.grid(row=0, column=0, padx=10, pady=y)
         open_frame_head.pack()
-    # def create_button(self):
-
 
 
     def display(self, offset):
-        limit = 8
+        limit = 4
         database = db('localhost', 'root', 'root', 'rechnung_data')
         rechnungen_content = database.get_data(offset, limit)
 
         controller_build = Extraction()  # Klasse Extraction, neue Instanz erstellen
         pdf_data = controller_build.pdf_text_extraction()  # Klasse Extraction, Funktionsaufruf
-
-        pdf_number = pdf_data.__len__()
+        pdf_number = database.count_entry()
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)
         self.get_title(1, 0, f'Anzhal die Einträger:  {pdf_number}',  3)
         # Erstelle Ueberschriften aus keys des Dictionary
-        header = []
-        for head in pdf_data[0].keys():
-            header.append(head)
+        header = ['FIRMENNAME', 'DATUM', 'IBAN', 'GESAMTBETRAG', 'RECHNUNGSNUMMER', 'ZAHLUNGSFRIST', 'TELEFONNUMMER']
 
         # Erstelle Tabelle
         i = 0
         for i in range(len(rechnungen_content)):
-            for k in range(len(pdf_data[0])):
+            for k in range(len(header)):
                 h = Entry(self.root, width=21, fg='green', justify='center',
                           font=('Arial', 14, 'bold'))
                 h.grid(row=2, column=k)
@@ -97,7 +92,6 @@ class View():
         next = offset + limit
         next_button = tk.Button(self.root, text='Next >', command=lambda: self.display(next),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
-        print(i)
         next_button.grid(row=i+4, column=3, ipadx=50, pady=10)
         prev_button = tk.Button(self.root, text='< Prev', command=lambda: self.display(back),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
