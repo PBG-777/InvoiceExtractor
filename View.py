@@ -64,9 +64,6 @@ class View():
         limit = 4
         database = db('localhost', 'root', 'root', 'rechnung_data')
         rechnungen_content = database.get_data(offset, limit)
-
-        controller_build = Extraction()  # Klasse Extraction, neue Instanz erstellen
-        pdf_data = controller_build.pdf_text_extraction()  # Klasse Extraction, Funktionsaufruf
         pdf_number = database.count_entry()
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)

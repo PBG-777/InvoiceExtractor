@@ -28,15 +28,15 @@ class db:
 
     def set_Data(self):
         self.create_Table()
-        rechnungs_keys = self.get_rechnungen_keys()
         cur = self.my_db.cursor()
         var = Extraction()
 
         for element in var.pdf_text_extraction():  # Schleife durchläuft die Elemente der Liste, die Elemente enthalten die Dictionaries.
+            rechnungs_keys = self.get_rechnungen_keys()
             if str(element['RECHNUNGSNUMMER']) not in rechnungs_keys:
                 cur.execute('INSERT INTO rechnungen (FIRMENNAME,DATUM,IBAN,GESAMTBETRAG,RECHNUNGSNUMMER,ZAHLUNGSFRIST,TELEFONNUMMER) VALUES ( %s, %s, %s, %s, %s, %s, %s) ', (
-                element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'],
-                element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
+                    element['FIRMENNAME'], element['DATUM'], element['IBAN'], element['GESAMTBETRAG'],
+                    element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
             self.my_db.commit()
 
     # get number of rows
