@@ -5,7 +5,6 @@ from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
-import matplotlib.dates
 from datetime import datetime
 
 class View():
@@ -16,22 +15,35 @@ class View():
 
     # Extrafenster fuer Plot Gesamtbetrag vs. Datum
     def __plot_gesambetrag(self):
+        # TKinter Fenster erstellen
         matplot_window = tk.Toplevel(self.root)
         matplot_window.wm_title("Gesamtbetrag vs. Datum")
-        controller_build = Extraction()         #Klasse Extraction, neue Instanz erstellen
-        pdf_data = controller_build.pdf_text_extraction()  # Daten aus PDFs einlesen Funktionsaufruf NEU
+
+        # Daten abholen
+        #controller_build = Extraction()         #Klasse Extraction, neue Instanz erstellen
+        #pdf_data = controller_build.pdf_text_extraction()  # Daten aus PDFs einlesen Funktionsaufruf NEU
+        database = db('localhost', 'root', 'root', 'rechnung_data')
+        rechnungen_content = database.get_column("Datum, Gesamtbetrag")
 
         # Erstelle Vektoren
         x_values = []
         y_values = []
-        for set in pdf_data:
-            if "GESAMTBETRAG" in set and "DATUM" in set:
-                x_values.append(datetime.strptime(set["DATUM"], "%d.%m.%Y"))
-                y_values.append(set["GESAMTBETRAG"])
+        #for set in pdf_data:
+        #    if "GESAMTBETRAG" in set and "DATUM" in set:
+        #        x_values.append(datetime.strptime(set["DATUM"], "%d.%m.%Y"))
+        #        y_values.append(float(set["GESAMTBETRAG"]))
+        for set in rechnungen_content:
+            try:
+                x_value = datetime.strptime(set[0], "%d.%m.%Y")
+                y_value = float(set[1])
+                x_values.append(x_value)
+                y_values.append(y_value)
+            except:
+                pass
 
         # Zeichne
         fig = Figure(figsize=(5, 4), dpi=200)
-        dates = matplotlib.dates.date2num(x_values)
+        dates = mdates.date2num(x_values)
         ax = fig.add_subplot(111)
         ax.plot_date(dates, y_values)
 

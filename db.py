@@ -53,3 +53,12 @@ class db:
         inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
         #cur.commit()  # Ausführung der sqlite3-Anweisungen
         return inhalt
+
+    def get_column(self, column_names):
+        self.create_Table()
+        self.set_Data()
+        cur = self.my_db.cursor()
+        cur.execute("SELECT " + column_names + " FROM rechnungen")
+        inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
+        #cur.commit()  # Ausführung der sqlite3-Anweisungen
+        return inhalt
