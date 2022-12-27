@@ -73,7 +73,7 @@ class View():
 
 
     def display(self, offset):
-        limit = 4
+        limit = 8
         database = db('localhost', 'root', 'root', 'rechnung_data')
         rechnungen_content = database.get_data(offset, limit)
         pdf_number = database.count_entry()
