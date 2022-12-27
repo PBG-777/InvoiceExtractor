@@ -54,7 +54,7 @@ class View():
         fig.autofmt_xdate()
 
         ax.set_xlabel('Datum')
-        ax.set_ylabel('Rechnungsbetrag')
+        ax.set_ylabel('Rechnungsbetrag in €')
         ax.grid(True)
 
         canvas = FigureCanvasTkAgg(fig, master=matplot_window)
@@ -79,9 +79,9 @@ class View():
         pdf_number = database.count_entry()
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)
-        self.get_title(1, 0, f'Anzhal die Einträger:  {pdf_number}',  3)
+        self.get_title(1, 0, f'Anzahl die Einträge:  {pdf_number}',  3)
         # Erstelle Ueberschriften aus keys des Dictionary
-        header = ['FIRMENNAME', 'DATUM', 'IBAN', 'GESAMTBETRAG', 'RECHNUNGSNUMMER', 'ZAHLUNGSFRIST', 'TELEFONNUMMER']
+        header = ['FIRMENNAME', 'DATUM', 'IBAN', 'GESAMTBETRAG (€)', 'RECHNUNGSNUMMER', 'ZAHLUNGSFRIST', 'TELEFONNUMMER']
 
         # Erstelle Tabelle
         i = 0
