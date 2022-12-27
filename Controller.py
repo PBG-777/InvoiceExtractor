@@ -16,7 +16,7 @@ class Extraction:
     def file_list(self):
         """Ordner in einer Schleife durchlaufen, alle Dateinamen extrahieren und in Liste speichern"""
         #https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
-        directory = "rechnungen_temp"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
+        directory = "rechnungen"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
         for file in os.listdir(directory):
              filename = os.fsdecode(file)
              if filename.endswith(".pdf"):
@@ -106,7 +106,6 @@ class Extraction:
             else:
                 current_dataset["ZAHLUNGSFRIST"] = "none"
 
-        # print(text)
         telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
         tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
         if tel:
