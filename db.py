@@ -1,5 +1,5 @@
 import mysql.connector
-from Controller import Extraction
+from Extraction import Extraction
 
 class db:
     def __init__(self, host, user, password, database):

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from Controller import *
+from Extraction import *
 from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
