@@ -1,7 +1,7 @@
 # Implementierung Datenbank via sqlite3:
 
 import sqlite3
-from Controller import Extraction
+from Extraction import Extraction
 
 controller_build = Extraction()
 
