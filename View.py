@@ -8,10 +8,11 @@ import matplotlib.dates as mdates
 from datetime import datetime
 
 class View():
-    def __init__(self, geometry, title):
+    def __init__(self, geometry, title, host, username, password):
         self.root = tk.Tk()
         self.geometry = geometry
         self.title = title
+        self.database = db(host, username, password, 'rechnung_data')
 
     # Extrafenster fuer Plot Gesamtbetrag vs. Datum
     def __plot_gesambetrag(self):
@@ -22,8 +23,7 @@ class View():
         # Daten abholen
         #controller_build = Extraction()         #Klasse Extraction, neue Instanz erstellen
         #pdf_data = controller_build.pdf_text_extraction()  # Daten aus PDFs einlesen Funktionsaufruf NEU
-        database = db('localhost', 'root', 'root', 'rechnung_data')
-        rechnungen_content = database.get_column("Datum, Gesamtbetrag")
+        rechnungen_content = self.database.get_column("Datum, Gesamtbetrag")
 
         # Erstelle Vektoren
         x_values = []
@@ -63,23 +63,25 @@ class View():
 
     # eine Methode, Titel zu vergaben
     def get_title(self, row_number,column_num, title, y):
-        frame_head = tk.Frame(self.root, bd=1, highlightthickness=0, width=1650, height=50)
+        frame_head = tk.Frame(self.root, bd=1, highlightthickness=0, height=50)
         frame_head.grid(row=row_number, column=column_num)
         open_frame_head = tk.Frame(frame_head, bd=2)
         label_title = tk.Label(open_frame_head, text=title, fg='blue', justify='center',
-                                       font=('Arial', 14, 'bold'))
+                                       font=('Arial', 10, 'bold'))
         label_title.grid(row=0, column=0, padx=10, pady=y)
         open_frame_head.pack()
 
 
     def display(self, offset):
         limit = 8
-        database = db('localhost', 'root', 'root', 'rechnung_data')
-        rechnungen_content = database.get_data(offset, limit)
-        pdf_number = database.count_entry()
+        self.root.geometry(self.geometry)
+        self.root.title(self.title)
+        # Daten, die von Datenbank abgeholt in variable rechnung_content speichern
+        rechnungen_content = self.database.get_data(offset, limit)
+        pdf_number = self.database.count_entry()
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)
-        self.get_title(1, 0, f'Anzahl die Einträge:  {pdf_number}',  3)
+        self.get_title(1, 0, f'Anzahl Einträge: {pdf_number}',  3)
         # Erstelle Ueberschriften aus keys des Dictionary
         header = ['FIRMENNAME', 'DATUM', 'IBAN', 'GESAMTBETRAG (€)', 'RECHNUNGSNUMMER', 'ZAHLUNGSFRIST', 'TELEFONNUMMER']
 
@@ -88,17 +90,18 @@ class View():
         for i in range(len(rechnungen_content)):
             for k in range(len(header)):
                 h = Entry(self.root, width=21, fg='green', justify='center',
-                          font=('Arial', 14, 'bold'))
+                          font=('Arial', 11, 'bold'))
                 h.grid(row=2, column=k)
                 h.insert(END, f'{header[k]}')
                 e = Entry(self.root, width=21, fg='black', justify='center',
-                          font=('Arial', 14, 'bold'))
+                          font=('Arial', 11))
 
                 e.grid(row=i+3, column=k)
                 e.insert(END, f'{rechnungen_content[i][k]}')
 
         back = offset - limit
         next = offset + limit
+        # next un prev Buttons
         next_button = tk.Button(self.root, text='Next >', command=lambda: self.display(next),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
         next_button.grid(row=i+4, column=3, ipadx=50, pady=10)
@@ -117,12 +120,12 @@ class View():
             prev_button["state"] = "disabled"  # disable Prev button
 
         self.get_title(i+6, 3, 'Grafische Darstellung',  10)
-        b = tk.Button(self.root, text="Plot Gesamtbetrag vs. Datum", font=('Arial', 12, 'bold'), command=self.__plot_gesambetrag)
+        b = tk.Button(self.root, width=21, text="Plot Gesamtbetrag / Datum", font=('Arial', 9, 'bold'), command=self.__plot_gesambetrag)
         b.grid(row=i+7, column=3, pady=1)
 
         if __name__ == "__main__":
             self.root.mainloop()
 
 
-m = View('1650x500', "PDFs extraction")
+m = View('1200x500', "PDFs extraction", 'localhost', 'root', 'root')
 m.display(0)
