@@ -8,11 +8,13 @@ import matplotlib.dates as mdates
 from datetime import datetime
 
 class View():
-    def __init__(self, geometry, title, host, username, password):
+    def __init__(self, geometry, title, host, username, password, database):
         self.root = tk.Tk()
         self.geometry = geometry
         self.title = title
-        self.database = db(host, username, password, 'rechnung_data')
+        self.database = db(host, username, password, database)
+        self.database.create_Table()
+        self.database.set_Data()
 
     # Extrafenster fuer Plot Gesamtbetrag vs. Datum
     def __plot_gesambetrag(self):
@@ -95,7 +97,6 @@ class View():
                 h.insert(END, f'{header[k]}')
                 e = Entry(self.root, width=21, fg='black', justify='center',
                           font=('Arial', 11))
-
                 e.grid(row=i+3, column=k)
                 e.insert(END, f'{rechnungen_content[i][k]}')
 
@@ -104,10 +105,10 @@ class View():
         # next un prev Buttons
         next_button = tk.Button(self.root, text='Next >', command=lambda: self.display(next),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
-        next_button.grid(row=i+4, column=3, ipadx=50, pady=10)
+        next_button.grid(row=limit+3, column=3, ipadx=50, pady=10)
         prev_button = tk.Button(self.root, text='< Prev', command=lambda: self.display(back),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
-        prev_button.grid(row=i+5, column=3, ipadx=50)
+        prev_button.grid(row=limit+4, column=3, ipadx=50)
 
         if (pdf_number <= next):
             next_button["state"] = "disabled"  # disable next button
@@ -119,13 +120,13 @@ class View():
         else:
             prev_button["state"] = "disabled"  # disable Prev button
 
-        self.get_title(i+6, 3, 'Grafische Darstellung',  10)
+        self.get_title(limit+6, 3, 'Grafische Darstellung',  10)
         b = tk.Button(self.root, width=21, text="Plot Gesamtbetrag / Datum", font=('Arial', 9, 'bold'), command=self.__plot_gesambetrag)
-        b.grid(row=i+7, column=3, pady=1)
+        b.grid(row=limit+7, column=3, pady=1)
 
         if __name__ == "__main__":
             self.root.mainloop()
 
 
-m = View('1200x500', "PDFs extraction", 'localhost', 'root', 'root')
+m = View('1200x450', "PDFs extraction", 'localhost', 'root', 'root', 'rechnung_data')
 m.display(0)

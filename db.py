@@ -52,8 +52,6 @@ class db:
     # offset ist die Start Reihe
     # limit ist der Limit von Reihe
     def get_data(self, offset, limit):
-        self.create_Table()
-        self.set_Data()
         cur = self.my_db.cursor()
         cur.execute("SELECT * FROM rechnungen LIMIT "+ str(offset) +","+str(limit))
         inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
