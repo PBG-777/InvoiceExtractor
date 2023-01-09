@@ -18,50 +18,122 @@ class View():
 
     # Extrafenster fuer Plot Gesamtbetrag vs. Datum
     def __plot_gesambetrag(self):
+        
+        # Unterfunktion zum Plotten des XY-Plots
+        def plot_xy():
+            # Erstelle Vektoren
+            x_values = []
+            y_values = []
+            
+            # Daten traversieren und in Datetime-Typ und Gleitkommazahl umwandeln
+            for set in rechnungen_content:
+                try:
+                    x_value = datetime.strptime(set[0], "%d.%m.%Y")
+                    y_value = float(set[1])
+                    x_values.append(x_value)
+                    y_values.append(y_value)
+                except: # Überspringe bei Fehler bei Umwandlung
+                    pass
+                
+            # Datumsvektor in Matplotlib-Format umwandeln
+            datesxy = mdates.date2num(x_values)
+            
+            # Plot löschen
+            ax.cla()
+            # XY-Daten plotten. 
+            ax.plot_date(datesxy, y_values)
+            
+            # X-Achsen-Einheiten auf Monate stellen
+            locator = mdates.MonthLocator()
+            ax.xaxis.set_major_locator(locator)
+            # Datum automatisch formatieren
+            ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
+            fig.autofmt_xdate()
+            
+            # Achsenbeschriftung und Gitter
+            ax.set_xlabel('Datum')
+            ax.set_ylabel('Rechnungsbetrag in €')
+            ax.set_ylim(bottom=0)
+            ax.grid(True)
+            fig.subplots_adjust(bottom=0.25, left=0.2)
+            
+            # Tkinter Fenster neu zeichnen
+            canvas.draw()
+
+        def plot_histo():
+            # Histogramm Dictionary erstellen
+            histo = dict()
+            
+            # Histogrammdaten summieren
+            for set in rechnungen_content:
+               try:
+                    monat_jahr = '.'.join(set[0].split(".")[1:3])   # Nur Monate berücksichtigen
+                    monat_jahr = datetime.strptime(monat_jahr, "%m.%Y") # In Datetime-Typ umwandeln
+                    if monat_jahr in histo:
+                        histo[monat_jahr] +=  float(set[1])
+                    else:
+                        histo[monat_jahr] =  float(set[1])
+               except: # Überspringe bei Fehler bei Umwandlung
+                   pass
+            
+            # Histogramm sortieren nach Datum
+            histo = dict(sorted(histo.items()))
+            
+            # Erstelle Vektoren zum plotten
+            x_histo = []
+            y_histo = []
+            
+            # Vektoren mit Daten aus Dictionary füllen
+            for monat in histo:
+                x_histo.append(monat)
+                y_histo.append(histo[monat])
+            
+            # Plot löschen
+            ax.cla()
+            # bar Graph plotten
+            ax.bar(x_histo, y_histo, width=15)
+            
+            # X-Achsen-Einheiten auf Monate stellen
+            locator = mdates.MonthLocator()
+            ax.xaxis.set_major_locator(locator)
+            # Datum automatisch formatieren
+            ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
+            fig.autofmt_xdate()
+
+            # Achsenbeschriftung und Gitter
+            ax.set_xlabel('Monat')
+            ax.set_ylabel('Monatsumsatz in €')
+            ax.set_ylim(bottom=0)
+            ax.grid(True)
+            fig.subplots_adjust(bottom=0.25, left=0.2)
+
+            canvas.draw()
+        
+        # Daten aus Datenbank abholen
+        rechnungen_content = self.database.get_column("Datum, Gesamtbetrag")
+        # Ergebnis: Liste von Tuplen (Datumsstring, Betragsstring)             
+        
         # TKinter Fenster erstellen
         matplot_window = tk.Toplevel(self.root)
         matplot_window.wm_title("Gesamtbetrag vs. Datum")
 
-        # Daten abholen
-        #controller_build = Extraction()         #Klasse Extraction, neue Instanz erstellen
-        #pdf_data = controller_build.pdf_text_extraction()  # Daten aus PDFs einlesen Funktionsaufruf NEU
-        rechnungen_content = self.database.get_column("Datum, Gesamtbetrag")
+        # Erstelle Zeichnungsfenster: 5 Zoll breit und 3 Zoll hoch
+        fig = Figure(figsize=(5, 3), dpi=200)
 
-        # Erstelle Vektoren
-        x_values = []
-        y_values = []
-        #for set in pdf_data:
-        #    if "GESAMTBETRAG" in set and "DATUM" in set:
-        #        x_values.append(datetime.strptime(set["DATUM"], "%d.%m.%Y"))
-        #        y_values.append(float(set["GESAMTBETRAG"]))
-        for set in rechnungen_content:
-            try:
-                x_value = datetime.strptime(set[0], "%d.%m.%Y")
-                y_value = float(set[1])
-                x_values.append(x_value)
-                y_values.append(y_value)
-            except:
-                pass
-
-        # Zeichne
-        fig = Figure(figsize=(5, 4), dpi=200)
-        dates = mdates.date2num(x_values)
+        # Subplot erstellen
         ax = fig.add_subplot(111)
-        ax.plot_date(dates, y_values)
-
-        # Achsenformatierung: Nur Monate auf X-Achse
-        locator = mdates.AutoDateLocator()
-        ax.xaxis.set_major_locator(locator)
-        ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
-        fig.autofmt_xdate()
-
-        ax.set_xlabel('Datum')
-        ax.set_ylabel('Rechnungsbetrag in €')
-        ax.grid(True)
+        # Daten plotten
 
         canvas = FigureCanvasTkAgg(fig, master=matplot_window)
-        canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        
+        plot_xy()
+
+        # Create a tkinter Button widget. The text argument specifies the text displayed on the button, and the command argument specifies the function to be called when the button is clicked
+        button = tk.Button(matplot_window, text='Zu XY-Plot wechseln', command=plot_xy)  
+        button.pack() 
+        button2 = tk.Button(matplot_window, text='Zu Histogramm wechseln', command=plot_histo)
+        button2.pack()  # Add the button to the tkinter window using the pack layout manager
 
     # eine Methode, Titel zu vergaben
     def get_title(self, row_number,column_num, title, y):
