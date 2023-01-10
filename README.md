@@ -20,7 +20,8 @@ Zusätzlich ist ein Ordner mit Beispielrechnungen vorhanden.
 
 ## Voraussetzungen
 
-Folgende Bibliotheken müssen installiert sein:
+Das Programm benötigt eine Python Installation.
+Zudem müssen folgende Bibliotheken installiert sein:
 -tkinter
 -PyPDF2
 -matplotlib
@@ -31,6 +32,8 @@ Folgende Bibliotheken müssen installiert sein:
 
 Zudem muss einer lokale Datenbank installiert sein.
 Die Installation kann von folgendem Link gestartet werden:
+
+https://dev.mysql.com/downloads/installer/
 
 Nachdem die Datenbank installiert wurde, müssen in der Datei view.py in Zeile 203 die Zugangsdaten für die DB angepasst werden.
 Dafür muss einfach das lokal vergebene Passwort anstelle des zweiten "root" eingetragen werden.
