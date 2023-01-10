@@ -1,10 +1,12 @@
 ## About
 
-Mini-Projekt der Gruppe-B1-1 für das Fach 
-Programmierung für KI - WiSe22/23
+Mini-Projekt der Gruppe-B1-1 für das Fach Programmierung für KI - WiSe22/23
+
 Fachhochschule Südwestfalen
+
 Thema: Extrahieren von Informationen aus PDF Dokumenten
-Autoren: Alaa Haboubi, Paul Martin Hippenstiel, Philipp Bergau,  Peter Vitus Kipfstuhl, Bista Tark Raj
+
+Autoren: Alaa Haboubi, Paul Martin Hippenstiel, Peter Vitus Kipfstuhl, Bista Tark Raj, Philipp Bergau, Tark Raj Bista 
 
 
 ## Bestandteile des Programmes
