@@ -22,11 +22,11 @@ Zusätzlich ist ein Ordner mit Beispielrechnungen (32 Stück) vorhanden.
 
 Das Programm benötigt eine Python Installation.
 Zudem müssen folgende Bibliotheken installiert sein:
--tkinter
--PyPDF2
--matplotlib
--MySQL
--mysql.connector
+- tkinter
+- PyPDF2
+- matplotlib
+- MySQL
+- mysql.connector
 
 Zudem muss einer lokale MySQL Datenbank installiert sein.
 Die Installation kann von folgendem Link gestartet werden:
