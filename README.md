@@ -25,9 +25,7 @@ Zudem müssen folgende Bibliotheken installiert sein:
 -tkinter
 -PyPDF2
 -matplotlib
--datetime 
--re
--os
+-MySQL
 -mysql.connector
 
 Zudem muss einer lokale MySQL Datenbank installiert sein.
@@ -47,7 +45,7 @@ Zunächst werden alle Dateien in einem Ordner, bei denen es sich um PDFs handelt
 Anhand dieser Liste werden dann Regex auf die Rechnung angwendet, um die gewünschten Daten zu erhalten.
 Die extrahierten Daten werden in einer lokalen MySQL Datenbank abgelegt, wofür das Modul db.py zuständig ist (die Anbindung einer Cloud-DB wäre ebenso möglich).
 View.py öffnet eine tabellarische, grafische Übersicht aller Rechnungen. Hierfür wird die Bibliothek tkinter genutzt.
-Das sich öffnende Fenster beinhaltet zudem eine grafische Darstellung mit der Bibliothek Matplotlib.
+Desweiteren beinhaltet das Fenster ein Button, welcher eine grafische Darstellung mit der Bibliothek Matplotlib erzeugt.
 
 
 ## Folgende Daten werden mit regulären Ausdrücken aus den Rechnungen extrahiert:
