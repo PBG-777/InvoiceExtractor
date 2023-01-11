@@ -202,5 +202,5 @@ class View():
             self.root.mainloop()
 
 
-m = View('1200x450', "PDFs extraction", 'localhost', 'root', '12345678', 'rechnung_data')
+m = View('1200x450', "PDFs extraction", 'localhost', 'root', 'root', 'rechnung_data')
 m.display(0)
