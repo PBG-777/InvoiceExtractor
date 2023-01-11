@@ -48,7 +48,7 @@ View.py öffnet eine tabellarische, grafische Übersicht aller Rechnungen. Hierf
 Desweiteren beinhaltet das Fenster ein Button, welcher eine grafische Darstellung mit der Bibliothek Matplotlib erzeugt.
 
 
-## Folgende Daten werden mit regulären Ausdrücken aus den Rechnungen extrahiert:
+## Mit Regex extrahierte Daten
 Firmenname  
 IBAN  
 Telefonnummer  
