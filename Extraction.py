@@ -9,8 +9,9 @@ folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
 
 
 class Extraction:
+    """Klasse zur Extraktion der Daten aus diversen Rechnungen in einem Ordner"""
     def __init__(self):
-        """Konstruktor"""
+        """Konstruktor der Klasse erstellen"""
         pass
 
     def file_list(self):
@@ -36,10 +37,9 @@ class Extraction:
             pdfreader= PyPDF2.PdfFileReader(fhandler)
             x=pdfreader.numPages
             pageobj=pdfreader.getPage(x-1)
-            text=pageobj.extractText() #hier können die regex angesetzt werd, wir erhalten hier Strings
+            text=pageobj.extractText() #hier können die Regex angesetzt werden, wir erhalten hier Strings
             all_datasets.append(controller_build.regex_apply(text))
         return all_datasets
-
 
     def regex_apply(self, text):
         """Hier werden die Regex definiert und auf den Text aus der Fkt. pdf_text_extraction angewendet"""
@@ -55,15 +55,14 @@ class Extraction:
 
         #Regex: Datum
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
-        datum = min(datum)                    #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
+        datum = min(datum)  #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
         if datum:
             current_dataset["DATUM"] = datum
         else:
             current_dataset["DATUM"] = "none"
 
         # Regex: IBAN
-        # https://de.wikipedia.org/wiki/Internationale_Bankkontonummer#Zusammensetzung
-        # Annahme: Kontoidentifikation 11..30 Ziffern (theoretisch auch Buchstaben, aber dann wirds schwierig)
+        # Annahme: Kontoidentifikation 11..30 Ziffern
         iban = re.findall(r"[a-zA-Z]{2}\d{2}\s?(?:\d\s?){11,30}", text)
         if iban:
             iban = re.sub(r"\s+","",iban[0])
@@ -81,8 +80,7 @@ class Extraction:
         else:
             current_dataset["GESAMTBETRAG"] = "none"
 
-        # Regex Telefonnummer, Gesamtbetrag, Zahlungsfrist, Rechnungsnummer
-
+        # Regex für die Rechnungsnummer
         rechnung = re.findall('Rechnungsnummer:\s?[0-9]{1,8}|Rechnungs-Nr.:\s?[0-9]{1,8}|Rechnung Nr.\s?[0-9]{1,8}', text)
         rechungsnummer = re.findall('([0-9]{1,8})', str(rechnung))
         if rechungsnummer:
@@ -90,6 +88,7 @@ class Extraction:
         else:
             current_dataset["RECHNUNGSNUMMER"] = "none"
 
+        # Regex für die Zahlungsfrist
         betrag = re.findall("Der Gesamtbetrag ist bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
                             "Fälligkeitsdatum:\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
                             "bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}",text)
@@ -106,6 +105,7 @@ class Extraction:
             else:
                 current_dataset["ZAHLUNGSFRIST"] = "none"
 
+        #Regex zum erhalten der Telefonnummer
         telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
         tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
         if tel:

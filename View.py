@@ -158,7 +158,7 @@ class View():
 
         self.get_title(0, 3, 'Rechnungsdaten',  1)
         self.get_title(1, 0, f'Anzahl Einträge: {pdf_number}',  3)
-        # Erstelle Ueberschriften aus keys des Dictionary
+        # Erstelle Ueberschriften aus Keys des Dictionaries
         header = ['FIRMENNAME', 'DATUM', 'IBAN', 'GESAMTBETRAG (€)', 'RECHNUNGSNUMMER', 'ZAHLUNGSFRIST', 'TELEFONNUMMER']
 
         # Erstelle Tabelle
@@ -176,7 +176,7 @@ class View():
 
         back = offset - limit
         next = offset + limit
-        # next un prev Buttons
+        # next und prev Buttons
         next_button = tk.Button(self.root, text='Next >', command=lambda: self.display(next),
                                 fg='green', justify='center', font=('Arial', 12, 'bold'))
         next_button.grid(row=limit+3, column=3, ipadx=50, pady=10)
@@ -185,14 +185,14 @@ class View():
         prev_button.grid(row=limit+4, column=3, ipadx=50)
 
         if (pdf_number <= next):
-            next_button["state"] = "disabled"  # disable next button
+            next_button["state"] = "disabled"  # deaktiviere next Button
         else:
-            next_button["state"] = "active"  # enable next button
+            next_button["state"] = "active"  # aktiviere next Button
 
         if (back >= 0):
-            prev_button["state"] = "active"  # enable Prev button
+            prev_button["state"] = "active"  # aktiviere Prev Button
         else:
-            prev_button["state"] = "disabled"  # disable Prev button
+            prev_button["state"] = "disabled"  # deaktiviere Prev Button
 
         self.get_title(limit+6, 3, 'Grafische Darstellung',  10)
         b = tk.Button(self.root, width=21, text="Plot Gesamtbetrag / Datum", font=('Arial', 9, 'bold'), command=self.__plot_gesambetrag)
