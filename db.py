@@ -58,15 +58,14 @@ class db:
         """Daten von Datenbank abholen, Offset ist die Startreihe, Limit ist das Ende der Reihe"""
         cur = self.my_db.cursor()
         cur.execute("SELECT * FROM rechnungen LIMIT "+ str(offset) +","+str(limit))
-        inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
+        inhalt = cur.fetchall()  # Es werden alle Daten aus der Datenbank geholt
         return inhalt
 
     def get_column(self, column_names):
-        """Daten von einer oder mehreren Spalten abholen"""
+        """Daten von einer oder mehreren Spalten abholen. Ganze Spalte, ohne Limit oder Offset."""
         self.create_Table()
         self.set_Data()
         cur = self.my_db.cursor()
         cur.execute("SELECT " + column_names + " FROM rechnungen")
-        inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
-        #cur.commit()  # Ausführung der sqlite3-Anweisungen
+        inhalt = cur.fetchall()  # Es werden alle Daten aus der Datenbank geholt
         return inhalt

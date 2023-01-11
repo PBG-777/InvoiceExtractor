@@ -24,7 +24,7 @@ class View():
             x_values = []
             y_values = []
             
-            # Daten traversieren und in Datetime-Typ und Gleitkommazahl umwandeln
+            # Daten traversieren und von String in Datetime-Typ und Gleitkommazahl umwandeln
             for set in rechnungen_content:
                 try:
                     x_value = datetime.strptime(set[0], "%d.%m.%Y")
@@ -61,10 +61,10 @@ class View():
 
         def plot_histo():
             """Unterfunktion zum plotten des Histogramms"""
-            # Histogramm Dictionary erstellen
+            # Dictionary für Histogramm erstellen
             histo = dict()
             
-            # Histogrammdaten summieren
+            # Daten traversieren und zu Histogrammdaten summieren
             for set in rechnungen_content:
                try:
                     monat_jahr = '.'.join(set[0].split(".")[1:3])   # Nur Monate berücksichtigen
@@ -112,28 +112,35 @@ class View():
         # Daten aus Datenbank abholen
         rechnungen_content = self.database.get_column("Datum, Gesamtbetrag")
         # Ergebnis: Liste von Tuplen (Datumsstring, Betragsstring)             
-        
-        # TKinter Fenster erstellen
-        matplot_window = tk.Toplevel(self.root)
-        matplot_window.wm_title("Gesamtbetrag vs. Datum")
 
         # Erstelle Zeichnungsfenster: 5 Zoll breit und 3 Zoll hoch
         fig = Figure(figsize=(5, 3), dpi=200)
 
         # Subplot erstellen
         ax = fig.add_subplot(111)
-        # Daten plotten
-
-        canvas = FigureCanvasTkAgg(fig, master=matplot_window)
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         
-        plot_xy()
+        # TKinter Fenster erstellen
+        matplot_window = tk.Toplevel(self.root)
+        matplot_window.wm_title("Gesamtbetrag vs. Datum")
 
-        # Erstell mit tkinter ein Button.
-        button = tk.Button(matplot_window, text='Zu XY-Plot wechseln', command=plot_xy)  
-        button.pack() 
-        button2 = tk.Button(matplot_window, text='Zu Histogramm wechseln', command=plot_histo)
-        button2.pack()  # Füge den Button zum tkinter Fenster hinzu mittels dem pack layout manager
+        # Buttons erstellen um zwischen den Plots zu wechseln
+        # Dazu Frame erstellen, in das die beiden Buttons eingefügt werden
+        # Es wird mit dem "Pack" Layout-Manager gearbeitet
+        # Vgl.: https://www.studytonight.com/tkinter/python-tkinter-frame-widget
+        topframe = tk.Frame(matplot_window) 
+        topframe.pack(side = tk.BOTTOM)    # Frame am oberen Rand platzieren
+        button = tk.Button(topframe, text='Zu XY-Plot wechseln', command=plot_xy)  
+        button.pack(side = tk.LEFT)     # Buttons nebeneinander packen
+        button2 = tk.Button(topframe, text='Zu Histogramm wechseln', command=plot_histo)
+        button2.pack(side = tk.LEFT)    # Buttons nebeneinander packen
+
+        # Matplotlib figure in TK-Fenster einbetten
+        # Vgl.: https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.html
+        canvas = FigureCanvasTkAgg(fig, master=matplot_window)
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        
+        # Standardmäßig soll das Histogramm geplottet werden
+        plot_histo()
 
 
     def get_title(self, row_number,column_num, title, y):
