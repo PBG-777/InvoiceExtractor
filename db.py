@@ -3,6 +3,7 @@ from Extraction import Extraction
 
 class db:
     def __init__(self, host, user, password, database):
+        """Konstruktor der Klasse db"""
         self.host = host
         self.user = user
         self.password = password
@@ -15,11 +16,13 @@ class db:
         )
 
     def create_Table(self):
+        """Erstellt eine Tabelle, sofern diese noch nicht existiert"""
         cur = self.my_db.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS rechnungen (Firmenname TEXT, Datum TEXT, Iban TEXT, Gesamtbetrag TEXT, Rechnungsnummer VARCHAR(10) PRIMARY KEY,  Zahlungsfrist TEXT, Telefonnummer TEXT)')
 
-    # prüft ob die Rechnungsnummer schon in Datenbank ist
+
     def get_rechnungen_keys(self):
+        """prüft ob die Rechnungsnummer schon in Datenbank ist"""
         keys = []
         cur = self.my_db.cursor()
         cur.execute('SELECT Rechnungsnummer FROM rechnungen')
@@ -27,8 +30,9 @@ class db:
         keys = [item for t in inhalt for item in t]
         return keys
 
-    # Daten in Datenbank hinzufügen
+
     def set_Data(self):
+        """Die Daten in die Datenbank hinzufügen"""
         self.create_Table()
         cur = self.my_db.cursor()
         var = Extraction()
@@ -41,23 +45,24 @@ class db:
                     element['RECHNUNGSNUMMER'], element['ZAHLUNGSFRIST'], element['TELEFONNUMMER']))
             self.my_db.commit()
 
-    # get number of rows
+
     def count_entry(self):
+        """Erhalten der konkreten der benötigten Zeilen"""
         cur = self.my_db.cursor()
         cur.execute("SELECT COUNT(*) from rechnungen")
         result = cur.fetchone()
         return result.__getitem__(0)
 
-    # Daten von Datenbank abholen
-    # offset ist die Start Reihe
-    # limit ist der Limit von Reihe
+
     def get_data(self, offset, limit):
+        """Daten von Datenbank abholen, Offset ist die Startreihe, Limit ist das Ende der Reihe"""
         cur = self.my_db.cursor()
         cur.execute("SELECT * FROM rechnungen LIMIT "+ str(offset) +","+str(limit))
         inhalt = cur.fetchall()  # Es werden entsprechende (hier im Beispiel alle) Daten aus der Datenbank geholt
         return inhalt
 
     def get_column(self, column_names):
+        """Daten von einer oder mehreren Spalten abholen"""
         self.create_Table()
         self.set_Data()
         cur = self.my_db.cursor()

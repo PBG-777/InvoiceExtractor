@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import *
-from Extraction import *
 from db import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
@@ -9,6 +7,7 @@ from datetime import datetime
 
 class View():
     def __init__(self, geometry, title, host, username, password, database):
+        """Konstruktor der Klasse View"""
         self.root = tk.Tk()
         self.geometry = geometry
         self.title = title
@@ -16,11 +15,11 @@ class View():
         self.database.create_Table()
         self.database.set_Data()
 
-    # Extrafenster fuer Plot Gesamtbetrag vs. Datum
+
     def __plot_gesambetrag(self):
-        
-        # Unterfunktion zum Plotten des XY-Plots
+        """Extrafenster fuer Plot Gesamtbetrag vs. Datum"""
         def plot_xy():
+            """Unterfunktion zum Plotten des XY-Plots"""
             # Erstelle Vektoren
             x_values = []
             y_values = []
@@ -61,6 +60,7 @@ class View():
             canvas.draw()
 
         def plot_histo():
+            """Unterfunktion zum plotten des Histogramms"""
             # Histogramm Dictionary erstellen
             histo = dict()
             
@@ -129,14 +129,15 @@ class View():
         
         plot_xy()
 
-        # Create a tkinter Button widget. The text argument specifies the text displayed on the button, and the command argument specifies the function to be called when the button is clicked
+        # Erstell mit tkinter ein Button.
         button = tk.Button(matplot_window, text='Zu XY-Plot wechseln', command=plot_xy)  
         button.pack() 
         button2 = tk.Button(matplot_window, text='Zu Histogramm wechseln', command=plot_histo)
-        button2.pack()  # Add the button to the tkinter window using the pack layout manager
+        button2.pack()  # Füge den Button zum tkinter Fenster hinzu mittels dem pack layout manager
 
-    # eine Methode, Titel zu vergaben
+
     def get_title(self, row_number,column_num, title, y):
+        """eine Methode um den Titel der Spalten zu vergeben"""
         frame_head = tk.Frame(self.root, bd=1, highlightthickness=0, height=50)
         frame_head.grid(row=row_number, column=column_num)
         open_frame_head = tk.Frame(frame_head, bd=2)
@@ -147,6 +148,7 @@ class View():
 
 
     def display(self, offset):
+        """Erstellt das tkinter Anwendungsfenster"""
         limit = 8
         self.root.geometry(self.geometry)
         self.root.title(self.title)
@@ -163,14 +165,14 @@ class View():
         i = 0
         for i in range(len(rechnungen_content)):
             for k in range(len(header)):
-                h = Entry(self.root, width=21, fg='green', justify='center',
+                h = tk.Entry(self.root, width=21, fg='green', justify='center',
                           font=('Arial', 11, 'bold'))
                 h.grid(row=2, column=k)
-                h.insert(END, f'{header[k]}')
-                e = Entry(self.root, width=21, fg='black', justify='center',
+                h.insert(tk.END, f'{header[k]}')
+                e = tk.Entry(self.root, width=21, fg='black', justify='center',
                           font=('Arial', 11))
                 e.grid(row=i+3, column=k)
-                e.insert(END, f'{rechnungen_content[i][k]}')
+                e.insert(tk.END, f'{rechnungen_content[i][k]}')
 
         back = offset - limit
         next = offset + limit
@@ -200,5 +202,5 @@ class View():
             self.root.mainloop()
 
 
-m = View('1200x450', "PDFs extraction", 'localhost', 'root', 'root', 'rechnung_data')
+m = View('1200x450', "PDFs extraction", 'localhost', 'root', '12345678', 'rechnung_data')
 m.display(0)

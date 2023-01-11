@@ -6,7 +6,7 @@ import datetime
 # Allgemeiner Programmteil / danach folgen die Funktionen
 files = list()          #hier kommen die Dateinamen rein
 folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
-# folder = input("Bitte Ordnernamen angeben") variabler Ordner für Abfrage bei Programmstart von TKinter
+
 
 class Extraction:
     def __init__(self):
