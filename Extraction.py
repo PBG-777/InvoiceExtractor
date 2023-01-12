@@ -45,9 +45,8 @@ class Extraction:
 
     def regex_apply(self, text):
         """Hier werden die Regex definiert und auf den Text aus der Fkt. pdf_text_extraction angewendet"""
-        #Regex: Firmenname
+        #Regex: Firmenname (von Email Adresse extrahiert)
         current_dataset = dict()
-        # Firmenname final  (von Email Adresse extrahiert, Achtung aktuell enthält nur eine Rechnung eine Mailadresse, deswegen sind einige Listen leer)
         firmenname = re.findall("[A-z0-9]+@([A-z0-9]+).",text)
         if firmenname:
             firmenname = firmenname[0]
@@ -55,9 +54,9 @@ class Extraction:
         else:
             current_dataset["FIRMENNAME"] = "none"
 
-        #Regex: Datum
+        #Regex: Rechnungsdatum
         datum = re.findall("([0-9]{2}\.[0-9]{2}\.[0-9]{2,4})",text)
-        datum = min(datum)  #Rechnungsdatum final  (vorerst kleinstes Datum aus Rechnung gewählt)
+        datum = min(datum)  #kleinstes Datum aus Rechnung gewählt
         if datum:
             current_dataset["DATUM"] = datum
         else:
@@ -82,7 +81,7 @@ class Extraction:
         else:
             current_dataset["GESAMTBETRAG"] = "none"
 
-        # Regex für die Rechnungsnummer
+        # Regex: Rechnungsnummer
         rechnung = re.findall('Rechnungsnummer:\s?[0-9]{1,8}|Rechnungs-Nr.:\s?[0-9]{1,8}|Rechnung Nr.\s?[0-9]{1,8}', text)
         rechungsnummer = re.findall('([0-9]{1,8})', str(rechnung))
         if rechungsnummer:
@@ -90,7 +89,7 @@ class Extraction:
         else:
             current_dataset["RECHNUNGSNUMMER"] = "none"
 
-        # Regex für die Zahlungsfrist
+        # Regex: Zahlungsfrist
         betrag = re.findall("Der Gesamtbetrag ist bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
                             "Fälligkeitsdatum:\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}|"
                             "bis zum\s?[0-9]{2}\.[0-9]{2}\.[0-9]{2,4}",text)
@@ -107,8 +106,9 @@ class Extraction:
             else:
                 current_dataset["ZAHLUNGSFRIST"] = "none"
 
-        #Regex zum erhalten der Telefonnummer
-        telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
+        #Regex: Telefonnummer
+        telefonnummer = re.findall("Telefon:\s[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|Telefon\s?(?:\d\s?){9,13}|"
+                                   "Tel:\s(?:\d\s?){7,11}|Mobil\s?(?:\d\s?){7,13}", text)
         tel = re.findall("[0-9]{4}\s[/]\s+?(?:\d\s?){7,11}|\s(?:\d\s?){7,11}", str(telefonnummer))
         if tel:
             current_dataset["TELEFONNUMMER"] = tel[0]

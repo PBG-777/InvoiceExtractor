@@ -1,5 +1,5 @@
 import tkinter as tk
-from db import *
+from Database import *
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
@@ -11,7 +11,7 @@ class View():
         self.root = tk.Tk()
         self.geometry = geometry
         self.title = title
-        self.database = db(host, username, password, database)
+        self.database = Database(host, username, password, database)
         self.database.create_Table()
         self.database.set_Data()
 
@@ -39,7 +39,7 @@ class View():
             
             # Plot löschen
             ax.cla()
-            # XY-Daten plotten. 
+            # XY-Daten plotten
             ax.plot_date(datesxy, y_values)
             
             # X-Achsen-Einheiten auf Monate stellen
@@ -73,7 +73,7 @@ class View():
                         histo[monat_jahr] +=  float(set[1])
                     else:
                         histo[monat_jahr] =  float(set[1])
-               except: # Überspringe bei Fehler bei Umwandlung
+               except: # Überspringe Datensatz bei einem Fehler bei der Umwandlung
                    pass
             
             # Histogramm sortieren nach Datum
@@ -90,7 +90,7 @@ class View():
             
             # Plot löschen
             ax.cla()
-            # bar Graph plotten
+            # Balkendiagramm plotten
             ax.bar(x_histo, y_histo, width=15)
             
             # X-Achsen-Einheiten auf Monate stellen
@@ -111,7 +111,7 @@ class View():
         
         # Daten aus Datenbank abholen
         rechnungen_content = self.database.get_column("Datum, Gesamtbetrag")
-        # Ergebnis: Liste von Tuplen (Datumsstring, Betragsstring)             
+        # Ergebnis: Liste von Tupeln (Datumsstring, Betragsstring)
 
         # Erstelle Zeichnungsfenster: 5 Zoll breit und 3 Zoll hoch
         fig = Figure(figsize=(5, 3), dpi=200)
