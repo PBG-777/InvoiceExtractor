@@ -181,6 +181,7 @@ class View():
                 e.grid(row=i+3, column=k)
                 e.insert(tk.END, f'{rechnungen_content[i][k]}')
 
+        # https://www.plus2net.com/python/tkinter-sqlite-paging.php
         back = offset - limit
         next = offset + limit
         # next und prev Buttons
@@ -209,5 +210,5 @@ class View():
             self.root.mainloop()
 
 
-m = View('1200x450', "PDFs extraction", 'localhost', 'root', 'root', 'rechnung_data')
+m = View('1200x450', "PDFs extraction", 'localhost', 'username', 'password', 'rechnung_data')
 m.display(0)
