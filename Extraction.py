@@ -18,7 +18,7 @@ class Extraction:
 
     def file_list(self):
         """Ordner in einer Schleife durchlaufen, alle Dateinamen extrahieren und in Liste speichern"""
-        #https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
+        # Vgl. https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
         directory = "rechnungen"       #hier der Unterordnern Name einsetzen, Unterordner des laufenden Projekts
         for file in os.listdir(directory):
              filename = os.fsdecode(file)
@@ -29,6 +29,7 @@ class Extraction:
 
     def pdf_text_extraction(self):
         """Extrahiert den Text aller PDF Dateien mit dem Dateinamen aus der Liste "files" mittels for Schleife"""
+        # Vgl. https://stackoverflow.com/questions/34837707/how-to-extract-text-from-a-pdf-file
         all_datasets = list()  # Hier werden die extrahierten Datensätze gesammelt
         controller_build.file_list()
         for item in files:
