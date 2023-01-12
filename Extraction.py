@@ -3,9 +3,11 @@ import os
 import re
 import datetime
 
-# Allgemeiner Programmteil / danach folgen die Funktionen
+# Allgemeiner Programmteil
 files = list()          #hier kommen die Dateinamen rein
-folder = "rechnungen"   #vorerst fester Ordner, siehe eine Zeile darunter
+folder = "rechnungen"   #Ordnername, in dem die Rechnungen liegen
+#der Ordner muss ein Unterordner im Programmordner sein
+#Anpassung durch absolute Pfadangabe möglich
 
 
 class Extraction:
