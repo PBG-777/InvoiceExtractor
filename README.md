@@ -33,8 +33,11 @@ Die Installation kann von folgendem Link gestartet werden:
 
 https://dev.mysql.com/downloads/installer/
 
-Nachdem die Datenbank installiert wurde, müssen in der Datei view.py in Zeile 205 die Zugangsdaten für die DB angepasst werden.
-Dafür muss einfach das lokal vergebene Passwort anstelle des zweiten "root" eingetragen werden.
+Nachdem die Datenbank installiert wurde, 
+1 - eine Datenbank (Schema) mit die Name rechnung_data erstellen
+2 - in der Datei view.py in Zeile 213 die Zugangsdaten für die DB angepasst werden.
+    Dafür muss einfach das lokal vergebene Passwort, username und hostname (Standard ist localhost) eingetragen werden.
+3 - Programm von die Klasse view.py ausführen
 
 ## Funktionsweise
 
